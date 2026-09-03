@@ -1,6 +1,7 @@
-Hello Word!
-<<<<<<< HEAD
-DantMC
-=======
-jhosue
->>>>>>> 99408dbc1eba0ec408f38144fa9874b0367951be
+MÓDULOS
+---
+1. Usiarios
+2. Empresas
+3. Contactos
+4. Oportunidades
+5. 
