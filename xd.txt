@@ -1,2 +1,6 @@
 Hello Word!
+<<<<<<< HEAD
 DantMC
+=======
+jhosue
+>>>>>>> 99408dbc1eba0ec408f38144fa9874b0367951be
