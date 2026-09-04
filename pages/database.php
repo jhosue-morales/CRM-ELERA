@@ -1,9 +1,9 @@
 <?php
-// Configuración de la base de datos
-$host = 'localhost';
-$dbname = 'crm-bd';     // El nombre de tu base de datos
-$user = 'root';             // Usuario de XAMPP
-$password = '';            // Contraseña de XAMPP (vacía por defecto)
+// Configuración con variables de entorno para Railway
+$host = getenv('MYSQLHOST') ?: 'localhost';
+$dbname = getenv('MYSQLDATABASE') ?: 'crm_bd';
+$user = getenv('MYSQLUSER') ?: 'root';
+$password = getenv('MYSQLPASSWORD') ?: '';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $password);
