@@ -1,5 +1,5 @@
 <?php
-// Configuración con variables de entorno para Railway
+// Configuración para Railway
 $host = getenv('MYSQLHOST') ?: 'localhost';
 $dbname = getenv('MYSQLDATABASE') ?: 'crm_bd';
 $user = getenv('MYSQLUSER') ?: 'root';
