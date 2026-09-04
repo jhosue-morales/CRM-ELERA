@@ -1,26 +1,18 @@
 <?php
-// Obtenemos los datos desde las variables de entorno de Railway
+// Obtenemos los datos directamente de las variables de entorno de Railway
 $host = getenv('MYSQLHOST');
 $port = getenv('MYSQLPORT');
-$dbname = getenv('MYSQLDATABASE');
+$dbname = getenv('MYSQL_DATABASE');
 $user = getenv('MYSQLUSER');
 $pass = getenv('MYSQLPASSWORD');
 
-// Si por alguna razón las variables están vacías, usa los valores por defecto de Railway
-if (!$host) $host = 'mysql.railway.internal';
-if (!$port) $port = '3306';
-if (!$dbname) $dbname = 'railway';
-if (!$user) $user = 'root';
-
 try {
-    // Forzamos a PHP a conectarse por IP y puerto (NO por socket local)
+    // Creamos la conexión usando el puerto y el host de Railway
     $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4";
     $pdo = new PDO($dsn, $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-    // Descomenta la siguiente línea si quieres probar si conectó
-    // echo "Conexión exitosa";
-
+    // echo "Conexión exitosa"; // Descomenta esto si quieres probar si conecta
 } catch (PDOException $e) {
     die("Error de conexión: " . $e->getMessage());
 }
