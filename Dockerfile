@@ -1,21 +1,24 @@
 FROM php:8.2-apache
 
-# Instalar extensiones pdo
+# Instalar pdo
 RUN docker-php-ext-install pdo pdo_mysql
 
-# Copiar la configuración personalizada que fuerza el uso de mpm_prefork
-# (Reemplaza el archivo de configuración que tiene los conflictos)
-COPY apache-mpm.conf /etc/apache2/conf-available/mpm.conf
+# 1. DESACTIVAR TODO RASTRO DE OTROS MPMS Y FORZAR PREFORK
+# Usamos 'sed' para editar el archivo de configuración directamente (esto evita errores de sintaxis de a2dismod en imágenes nuevas)
+RUN a2dismod mpm_event 2>/dev/null; \
+    a2dismod mpm_worker 2>/dev/null; \
+    a2enmod mpm_prefork rewrite && \
+    sed -i 's/^LoadModule mpm_event_module/#LoadModule mpm_event_module/g' /etc/apache2/mods-available/mpm_event.load 2>/dev/null; \
+    sed -i 's/^LoadModule mpm_worker_module/#LoadModule mpm_worker_module/g' /etc/apache2/mods-available/mpm_worker.load 2>/dev/null;
 
-# Habilitar esa configuración y deshabilitar los módulos conflictivos
-RUN ln -sf /etc/apache2/conf-available/mpm.conf /etc/apache2/conf-enabled/mpm.conf \
-    && a2dismod mpm_event mpm_worker 2>/dev/null; a2enmod mpm_prefork
+# 2. COPIAR LA CONFIGURACIÓN VIRTUAL HOST
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 
-# Copiar el código de tu web
+# 3. COPIAR TU CÓDIGO
 COPY . /var/www/html/
 
-# Exponer el puerto 80
+# Exponer puerto
 EXPOSE 80
 
-# Arrancar Apache
+# Arrancar
 CMD ["apache2-foreground"]
