@@ -1,8 +1,10 @@
-ARG CACHE_BUST=10000003
+# CAMBIA EL NÚMERO PARA FORZAR LA RECONSTRUCCIÓN
+ARG CACHE_BUST=10000007
+
 FROM php:8.2-apache
 
-# Instalar pdo
-RUN docker-php-ext-install pdo pdo_mysql
+# Instalar pdo y mysqli (necesario para conexiones remotas)
+RUN docker-php-ext-install pdo pdo_mysql mysqli
 
 # Copiar tu código
 COPY . /var/www/html/
