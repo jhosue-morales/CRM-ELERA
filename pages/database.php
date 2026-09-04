@@ -1,7 +1,7 @@
 <?php
 // Configuración de la base de datos
 $host = 'localhost';
-$dbname = 'cmr-bd';     // El nombre de tu base de datos
+$dbname = 'crm-bd';     // El nombre de tu base de datos
 $user = 'root';             // Usuario de XAMPP
 $password = '';            // Contraseña de XAMPP (vacía por defecto)
 
