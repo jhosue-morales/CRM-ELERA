@@ -1,16 +1,21 @@
 FROM php:8.2-apache
 
-# Desactivar módulos incompatibles (mpm_event y mpm_worker) y activar mpm_prefork
-RUN a2dismod mpm_event mpm_worker 2>/dev/null; a2enmod mpm_prefork
-
-# Instalar extensiones necesarias para conectar con MySQL
+# Instalar extensiones pdo
 RUN docker-php-ext-install pdo pdo_mysql
 
-# Copiar los archivos de tu proyecto al directorio web de Apache
+# Copiar la configuración personalizada que fuerza el uso de mpm_prefork
+# (Reemplaza el archivo de configuración que tiene los conflictos)
+COPY apache-mpm.conf /etc/apache2/conf-available/mpm.conf
+
+# Habilitar esa configuración y deshabilitar los módulos conflictivos
+RUN ln -sf /etc/apache2/conf-available/mpm.conf /etc/apache2/conf-enabled/mpm.conf \
+    && a2dismod mpm_event mpm_worker 2>/dev/null; a2enmod mpm_prefork
+
+# Copiar el código de tu web
 COPY . /var/www/html/
 
 # Exponer el puerto 80
 EXPOSE 80
 
-# Comando esencial para iniciar Apache y mantener el contenedor vivo
+# Arrancar Apache
 CMD ["apache2-foreground"]
