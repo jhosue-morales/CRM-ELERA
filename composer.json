@@ -1,0 +1,8 @@
+{
+    "name": "crm/login",
+    "description": "Sistema de login para CRM",
+    "type": "project",
+    "require": {
+        "php": ">=7.4"
+    }
+}
