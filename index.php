@@ -255,7 +255,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="login-box"> 
                     <!-- LOGO MOBILE --> 
                     <div class="left-logo">
-                        <img src="/Screenshot_1.png" alt="" srcset="" width="100%">
+                        <img src="/icono.jpg" alt="" srcset="" width="100%">
                     </div> 
                     <div class="mb-4"> 
                         <h2 class="login-title mb-2"> Bienvenido </h2> 
