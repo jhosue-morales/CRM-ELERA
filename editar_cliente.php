@@ -90,11 +90,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         <div class="col-md-6 mb-3">
                             <label>Tipo *</label>
-                            <select name="tipo" class="form-select">
-                                <?php foreach ($tipos as $t): ?>
-                                    <option value="<?php echo $t['nombre']; ?>" <?php if($t['nombre'] == $cliente['tipo']) echo 'selected'; ?>><?php echo $t['nombre']; ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                            <div class="input-group">
+                                <select name="tipo" class="form-select">
+                                    <?php foreach ($tipos as $t): ?>
+                                        <option value="<?php echo $t['nombre']; ?>" <?php if($t['nombre'] == $cliente['tipo']) echo 'selected'; ?>><?php echo $t['nombre']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalTipo">+</button>
+                            </div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label>Asignado a</label>
@@ -123,5 +126,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </div>
+
+    <!-- Modal para agregar nuevo tipo -->
+    <div class="modal fade" id="modalTipo" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="agregar_tipo.php" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Agregar nuevo tipo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" name="nuevo_tipo" class="form-control" placeholder="Ej: Cliente VIP" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
