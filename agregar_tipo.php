@@ -9,10 +9,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $stmt = $pdo->prepare("INSERT INTO tipos_clientes (nombre) VALUES (?)");
             $stmt->execute([$nombre_tipo]);
-            echo "<script>alert('Tipo agregado correctamente.'); window.location.href='crear_cliente.php';</script>";
+            // Redirige de vuelta al formulario, pero con la variable para mostrar el mensaje de éxito
+            header('Location: crear_cliente.php?tipo_agregado=1');
             exit();
         } catch (PDOException $e) {
-            echo "<script>alert('Error: Ese tipo ya existe o el nombre está vacío.'); window.location.href='crear_cliente.php';</script>";
+            header('Location: crear_cliente.php?tipo_error=1');
             exit();
         }
     }

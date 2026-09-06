@@ -5,6 +5,12 @@ require_once 'database.php';
 
 $tipos = $pdo->query("SELECT * FROM tipos_clientes")->fetchAll();
 
+if (isset($_GET['tipo_agregado'])) {
+    $mensaje_tipo = '<div class="alert alert-success">Tipo agregado correctamente.</div>';
+} elseif (isset($_GET['tipo_error'])) {
+    $mensaje_tipo = '<div class="alert alert-danger">Error: Ese tipo ya existe o el nombre está vacío.</div>';
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
@@ -14,10 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $asignado = $_POST['asignado'];
     $compras = $_POST['compras_realizadas'] ?? 0;
     $direccion = $_POST['direccion'];
+    $comentario = $_POST['comentario'] ?? '';
     
     try {
-        $stmt = $pdo->prepare("INSERT INTO clientes (nombre, apellido, telefono, telefono_empresa, tipo, asignado, compras_realizadas, direccion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$nombre, $apellido, $telefono, $telefono_empresa, $tipo, $asignado, $compras, $direccion]);
+        $stmt = $pdo->prepare("INSERT INTO clientes (nombre, apellido, telefono, telefono_empresa, tipo, asignado, compras_realizadas, direccion, comentario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$nombre, $apellido, $telefono, $telefono_empresa, $tipo, $asignado, $compras, $direccion, $comentario]);
         
         $clienteId = $pdo->lastInsertId();
         
@@ -45,9 +52,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="card">
             <div class="card-header bg-secondary text-white">Creación Rápida Contacto</div>
             <div class="card-body">
+                <?php echo $mensaje_tipo ?? ''; ?>
                 <?php if (isset($error)) echo "<div class='alert alert-danger'>$error</div>"; ?>
                 <form method="POST">
                     <div class="row">
+                        <!-- ... (todos los campos anteriores) ... -->
                         <div class="col-md-6 mb-3">
                             <label>Nombre</label>
                             <input type="text" name="nombre" class="form-control" required>
@@ -64,8 +73,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <label>Teléfono Empresa</label>
                             <input type="text" name="telefono_empresa" class="form-control">
                         </div>
-                        
-                        <!-- DESPLEGABLE CON OPCIÓN DE AGREGAR NUEVO TIPO -->
                         <div class="col-md-6 mb-3">
                             <label>Tipo *</label>
                             <div class="input-group">
@@ -77,7 +84,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalTipo">+</button>
                             </div>
                         </div>
-
                         <div class="col-md-6 mb-3">
                             <label>Asignado a</label>
                             <select name="asignado" class="form-select">
@@ -93,6 +99,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="col-md-6 mb-3">
                             <label>Compras Realizadas</label>
                             <input type="number" name="compras_realizadas" class="form-control" value="0">
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label>Comentario</label>
+                            <textarea name="comentario" class="form-control" placeholder="Escribe aquí un comentario sobre este cliente..."></textarea>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-success">Guardar</button>

@@ -1,6 +1,11 @@
 <?php
 session_start();
-if (!isset($_SESSION['usuario_id'])) { header('Location: index.php'); exit(); }
+
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: index.php');
+    exit();
+}
+
 require_once 'database.php';
 
 $id = $_GET['id'];
@@ -18,9 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $asignado = $_POST['asignado'];
     $compras = $_POST['compras_realizadas'];
     $direccion = $_POST['direccion'];
+    $comentario = $_POST['comentario'] ?? '';
     
     try {
-        // Guardamos los datos anteriores para comparar
+        // Comparamos los datos viejos con los nuevos para saber qué cambió
         $cambios = [];
         if ($cliente['nombre'] != $nombre) $cambios[] = 'nombre';
         if ($cliente['apellido'] != $apellido) $cambios[] = 'apellido';
@@ -29,15 +35,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($cliente['asignado'] != $asignado) $cambios[] = 'asignado';
         if ($cliente['compras_realizadas'] != $compras) $cambios[] = 'compras';
         if ($cliente['direccion'] != $direccion) $cambios[] = 'dirección';
+        if ($cliente['comentario'] != $comentario) $cambios[] = 'comentario';
         
         $accion = 'Contacto editado';
         if (count($cambios) > 0) {
             $accion = 'Contacto editado: Cambió ' . implode(', ', $cambios);
         }
         
-        $stmt = $pdo->prepare("UPDATE clientes SET nombre=?, apellido=?, telefono=?, telefono_empresa=?, tipo=?, asignado=?, compras_realizadas=?, direccion=? WHERE id=?");
-        $stmt->execute([$nombre, $apellido, $telefono, $telefono_empresa, $tipo, $asignado, $compras, $direccion, $id]);
+        $stmt = $pdo->prepare("UPDATE clientes SET nombre=?, apellido=?, telefono=?, telefono_empresa=?, tipo=?, asignado=?, compras_realizadas=?, direccion=?, comentario=? WHERE id=?");
+        $stmt->execute([$nombre, $apellido, $telefono, $telefono_empresa, $tipo, $asignado, $compras, $direccion, $comentario, $id]);
         
+        // Registrar en historial
         $usuario = $_SESSION['usuario_nombre'] ?? 'Admin';
         $stmtHist = $pdo->prepare("INSERT INTO historial_clientes (cliente_id, usuario, accion) VALUES (?, ?, ?)");
         $stmtHist->execute([$id, $usuario, $accion]);
@@ -103,6 +111,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="col-md-6 mb-3">
                             <label>Compras Realizadas</label>
                             <input type="number" name="compras_realizadas" value="<?php echo $cliente['compras_realizadas']; ?>" class="form-control">
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label>Comentario</label>
+                            <textarea name="comentario" class="form-control"><?php echo $cliente['comentario']; ?></textarea>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Actualizar</button>

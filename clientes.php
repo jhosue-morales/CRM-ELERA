@@ -83,6 +83,7 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         <p><strong>Nombre:</strong> <?php echo $cliente['nombre']; ?></p>
                                         <p><strong>Apellido:</strong> <?php echo $cliente['apellido']; ?></p>
                                         <p><strong>Asignado a:</strong> <?php echo $cliente['asignado']; ?></p>
+                                        <p><strong>Comentario:</strong> <?php echo $cliente['comentario'] ?? 'Sin comentarios'; ?></p>
                                     </div>
                                     <div class="col-md-6 sidebar-right p-3">
                                         <h6>Actualizaciones</h6>
