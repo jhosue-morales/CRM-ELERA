@@ -1,11 +1,6 @@
 <?php
 session_start();
-
-if (!isset($_SESSION['usuario_id'])) {
-    header('Location: index.php');
-    exit();
-}
-
+if (!isset($_SESSION['usuario_id'])) { header('Location: index.php'); exit(); }
 require_once 'database.php';
 
 $tipos = $pdo->query("SELECT * FROM tipos_clientes")->fetchAll();
@@ -26,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $clienteId = $pdo->lastInsertId();
         
-        // Registrar en historial (usa el nombre real de tu sesión)
         $usuario = $_SESSION['usuario_nombre'] ?? 'Admin';
         $stmtHist = $pdo->prepare("INSERT INTO historial_clientes (cliente_id, usuario, accion) VALUES (?, ?, ?)");
         $stmtHist->execute([$clienteId, $usuario, 'Contacto creado']);
@@ -70,14 +64,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <label>Teléfono Empresa</label>
                             <input type="text" name="telefono_empresa" class="form-control">
                         </div>
+                        
+                        <!-- DESPLEGABLE CON OPCIÓN DE AGREGAR NUEVO TIPO -->
                         <div class="col-md-6 mb-3">
                             <label>Tipo *</label>
-                            <select name="tipo" class="form-select" required>
-                                <?php foreach ($tipos as $t): ?>
-                                    <option value="<?php echo $t['nombre']; ?>"><?php echo $t['nombre']; ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                            <div class="input-group">
+                                <select name="tipo" class="form-select" required>
+                                    <?php foreach ($tipos as $t): ?>
+                                        <option value="<?php echo $t['nombre']; ?>"><?php echo $t['nombre']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalTipo">+</button>
+                            </div>
                         </div>
+
                         <div class="col-md-6 mb-3">
                             <label>Asignado a</label>
                             <select name="asignado" class="form-select">
@@ -101,5 +101,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </div>
+
+    <!-- Modal para agregar nuevo tipo -->
+    <div class="modal fade" id="modalTipo" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="agregar_tipo.php" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Agregar nuevo tipo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" name="nuevo_tipo" class="form-control" placeholder="Ej: Cliente VIP" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
