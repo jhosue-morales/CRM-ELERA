@@ -1,9 +1,16 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("Location: index.php");
+
+// Si NO está logueado, lo manda al login
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: index.php');
     exit();
 }
+
+$nombre = $_SESSION['usuario_nombre'];
+$rol = $_SESSION['usuario_rol'];
+
+
 require_once 'database.php';
 
 $stmt = $pdo->query("SELECT * FROM clientes ORDER BY id DESC");
