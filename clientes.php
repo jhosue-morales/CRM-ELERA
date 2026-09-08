@@ -678,11 +678,12 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <a href="eliminar_cliente.php?id=<?php echo $cliente['id']; ?>" class="action-btn" onclick="return confirm('¿Seguro?')"><i class="bi bi-trash"></i></a>
                         </td>
                     </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
     </main>
-    <?php endforeach; ?>
+    
                     <!-- Modal Vista Rápida con Historial -->
                     <div class="modal fade" id="vista<?php echo $cliente['id']; ?>" tabindex="-1">
                         <div class="modal-dialog">
@@ -720,7 +721,7 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                         </div>
                     </div>
-                    <?php endforeach; ?>
+                    
                 </tbody>
             </table>
         </div>
