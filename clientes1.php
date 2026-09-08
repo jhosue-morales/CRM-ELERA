@@ -687,7 +687,6 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <h5 class="offcanvas-title">
                                 <?php echo $cliente['nombre'] . ' ' . $cliente['apellido']; ?>
                             </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="offcanvas-body">
                             <!-- =================================
@@ -733,16 +732,46 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <!-- =================================
                                  COMENTARIO
                             ================================== -->
-                            <section class="client-section">
-                                <div class="section-title">
-                                    Comentario
-                                </div>
-                                <textarea
-                                    class="comment-box"
-                                    placeholder="Escribe un comentario sobre este cliente..."
-                                    disabled
-                                ><?php echo $cliente['comentario'] ?? 'Sin comentarios'; ?></textarea>
-                            </section>
+                            <!-- =================================
+     COMENTARIOS
+================================== -->
+<section class="client-section">
+    <div class="section-title">
+        Comentarios
+    </div>
+    
+    <!-- Lista de comentarios ya existentes -->
+    <div style="max-height: 150px; overflow-y: auto; margin-bottom: 15px;">
+        <?php
+        $stmtCom = $pdo->prepare("SELECT * FROM comentarios_clientes WHERE cliente_id = ? ORDER BY fecha DESC");
+        $stmtCom->execute([$cliente['id']]);
+        $comentarios = $stmtCom->fetchAll(PDO::FETCH_ASSOC);
+        ?>
+        <?php if ($comentarios): ?>
+            <?php foreach ($comentarios as $c): ?>
+                <div style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px; margin-bottom: 8px;">
+                    <div style="font-size: 11px; font-weight: 700; color: #2563eb;">
+                        <?php echo $c['usuario']; ?> <span style="color: #94a3b8; font-weight: 400;"><?php echo $c['fecha']; ?></span>
+                    </div>
+                    <div style="font-size: 13px; color: #1e293b; margin-top: 2px;">
+                        <?php echo $c['comentario']; ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p class="text-muted small" style="font-size: 12px;">Sin comentarios aún.</p>
+        <?php endif; ?>
+    </div>
+
+    <!-- Formulario para agregar comentario -->
+    <form action="agregar_comentario.php" method="POST">
+        <input type="hidden" name="cliente_id" value="<?php echo $cliente['id']; ?>">
+        <textarea name="comentario" class="comment-box" placeholder="Escribe un comentario..." required></textarea>
+        <button type="submit" class="btn btn-save text-white">
+            <i class="bi bi-send me-1"></i> Agregar comentario
+        </button>
+    </form>
+</section>
                             <!-- =================================
                                  HISTORIAL
                             ================================== -->
@@ -785,5 +814,16 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
     </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        <?php if (isset($_GET['abierto']) && $_GET['abierto'] > 0): ?>
+            var miOffcanvas = document.getElementById('vista<?php echo $_GET['abierto']; ?>');
+            if (miOffcanvas) {
+                var instancia = new bootstrap.Offcanvas(miOffcanvas);
+                instancia.show();
+            }
+        <?php endif; ?>
+    });
+</script>
 </body>
 </html>
