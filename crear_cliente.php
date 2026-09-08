@@ -100,10 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <label>Compras Realizadas</label>
                             <input type="number" name="compras_realizadas" class="form-control" value="0">
                         </div>
-                        <div class="col-md-12 mb-3">
-                            <label>Comentario</label>
-                            <textarea name="comentario" class="form-control" placeholder="Escribe aquí un comentario sobre este cliente..."></textarea>
-                        </div>
+                        
                     </div>
                     <button type="submit" class="btn btn-success">Guardar</button>
                     <a href="clientes.php" class="btn btn-secondary">Cancelar</a>
