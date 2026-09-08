@@ -682,6 +682,10 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </table>
         </div>
     </main>
+    <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <p class="text-muted small">Sin actualizaciones.</p>
+                                        <?php endif; ?>
 
                     <!-- Modal Vista Rápida con Historial -->
                     <div class="modal fade" id="vista<?php echo $cliente['id']; ?>" tabindex="-1">
