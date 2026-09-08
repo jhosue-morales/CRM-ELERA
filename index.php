@@ -221,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="left-content"> 
                     <!-- LOGO --> 
                         <div class="left-logo mb-4">
-                            <img src="/Screenshot_1.png" alt="" srcset="" width="100%">
+                            <img src="/" alt="" srcset="" width="100%">
                         </div> 
                         <h1 class="left-title mb-4"> 
                             Gestiona tu negocio. <br> <span style="color:#60a5fa;"> Más simple. </span> 
@@ -256,7 +256,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="login-box"> 
                     <!-- LOGO MOBILE --> 
                     <div class="left-logo">
-                        <img src="/" alt="" srcset="" width="100%">
+                        <img src="/FULLCOLOR-LOGO.png" alt="" srcset="" width="100%">
                     </div> 
                     <div class="mb-4"> 
                         <h2 class="login-title mb-2"> Bienvenido </h2> 
