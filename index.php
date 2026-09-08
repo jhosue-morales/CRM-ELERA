@@ -2,9 +2,9 @@
 session_start();
 require_once 'database.php';
 
-// Si ya está logueado, ir al dashboard
+// Si ya está logueado, ir al clientes.php
 if (isset($_SESSION['usuario_id'])) {
-    header('Location: dashboard.php');
+    header('Location: clientes.php');
     exit();
 }
 
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['usuario_id'] = $usuario['id'];
             $_SESSION['usuario_nombre'] = $usuario['nombre'];
             $_SESSION['usuario_rol'] = $usuario['rol'];
-            header('Location: dashboard.php');
+            header('Location: clientes.php');
             exit();
         } else {
             $error = '❌ Email o contraseña incorrectos';

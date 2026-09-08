@@ -578,7 +578,7 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="#" class="menu-item active">
+            <a href="/dashboard.php" class="menu-item active">
                 <i class="bi bi-people"></i>
                 <span>Clientes</span>
             </a>
