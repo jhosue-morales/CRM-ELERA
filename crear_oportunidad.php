@@ -3,6 +3,10 @@ session_start();
 if (!isset($_SESSION['usuario_id'])) { header('Location: index.php'); exit(); }
 require_once 'database.php';
 
+// Consultar todos los clientes para el desplegable
+$stmt_clientes = $pdo->query("SELECT id, nombre, apellido FROM clientes ORDER BY nombre ASC");
+$lista_clientes = $stmt_clientes->fetchAll(PDO::FETCH_ASSOC);
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre_oportunidad = $_POST['nombre_oportunidad'];
     $asignado_a = $_POST['asignado_a'];
@@ -16,6 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Lógica para subir archivo
     $archivo_cotizacion = '';
     if (isset($_FILES['archivo_cotizacion']) && $_FILES['archivo_cotizacion']['error'] === UPLOAD_ERR_OK) {
+        // Asegurar que la carpeta exista antes de subir
+        if (!is_dir('uploads')) {
+            mkdir('uploads', 0777, true);
+        }
+        
         $nombre_archivo = time() . '_' . $_FILES['archivo_cotizacion']['name'];
         $ruta_destino = 'uploads/' . $nombre_archivo;
         
@@ -64,7 +73,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         <div class="col-md-6 mb-3">
                             <label>Nombre de Contacto (Cliente)</label>
-                            <input type="text" name="nombre_cliente" class="form-control" required>
+                            <select name="nombre_cliente" class="form-select" required>
+                                <option value="">-- Selecciona un cliente --</option>
+                                <?php foreach ($lista_clientes as $cliente): ?>
+                                    <option value="<?php echo $cliente['nombre'] . ' ' . $cliente['apellido']; ?>">
+                                        <?php echo $cliente['nombre'] . ' ' . $cliente['apellido']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label>Fase de Venta</label>
