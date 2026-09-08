@@ -574,15 +574,15 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
             Principal
         </div>
         <nav class="menu">
-            <a href="#" class="menu-item">
+            <a href="dashboard.php" class="menu-item">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="/dashboard.php" class="menu-item active">
+            <a href="/clientes.php" class="menu-item active">
                 <i class="bi bi-people"></i>
                 <span>Clientes</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="/oportunidades.php" class="menu-item">
                 <i class="bi bi-briefcase"></i>
                 <span>Oportunidades</span>
             </a>

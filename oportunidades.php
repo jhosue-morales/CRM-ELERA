@@ -127,6 +127,7 @@ $oportunidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th>N° Cotización</th>
                     <th>Fecha de Creación</th>
                     <th>Fecha Estimada de Cierre</th>
+                    <th>Documento</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -153,6 +154,15 @@ $oportunidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?php echo $op['numero_cotizacion']; ?></td>
                     <td><?php echo $op['fecha_creacion']; ?></td>
                     <td><?php echo $op['fecha_estimada_cierre']; ?></td>
+                    <td>
+                        <?php if (!empty($op['archivo_cotizacion'])): ?>
+                            <a href="<?php echo $op['archivo_cotizacion']; ?>" class="btn btn-sm btn-success" target="_blank">
+                                <i class="bi bi-download"></i> Descargar
+                            </a>
+                        <?php else: ?>
+                            <span class="text-muted">No hay archivo</span>
+                        <?php endif; ?>
+                    </td>
                     <td>
                         <a href="editar_oportunidad.php?id=<?php echo $op['id']; ?>" class="action-btn"><i class="bi bi-pencil"></i></a>
                         <a href="eliminar_oportunidad.php?id=<?php echo $op['id']; ?>" class="action-btn" onclick="return confirm('¿Seguro?')"><i class="bi bi-trash"></i></a>
