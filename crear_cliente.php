@@ -471,7 +471,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <!-- BOTONES -->
-                </form>
+               
             </div>
 
             <div class="form-footer">
@@ -489,6 +489,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <i class="bi bi-check-lg me-1"></i>
                     Guardar cliente
                 </button>
+                 </form>
             </div>
         </div>
     </div>
