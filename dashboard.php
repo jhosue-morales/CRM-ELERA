@@ -31,7 +31,7 @@ $rol = $_SESSION['usuario_rol'];
             <div class="card">
                 <h3>✅ Login exitoso</h3>
                 <p>Bienvenido al sistema CRM.</p>
-                <a href="/clientes.php" class="btn btn-primary">Ver Clientes</a>
+                <a href="/clientes1.php" class="btn btn-primary">Ver Clientes</a>
             </div>
             
             <div class="card">
