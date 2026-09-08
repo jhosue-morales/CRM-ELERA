@@ -327,7 +327,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php echo htmlspecialchars($error); ?>
                     </div>
                 <?php endif; ?>
-                <form method="POST">
+                <form method="POST" id="formCliente ">
                     <!-- ==========================
                          INFORMACIÓN
                     =========================== -->
@@ -489,8 +489,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <i class="bi bi-check-lg me-1"></i>
                     Guardar cliente
                 </button>
-                 </form>
-            </div>
+                </div>
+             </form>
         </div>
     </div>
 </main>
