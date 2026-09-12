@@ -80,10 +80,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .left-logo { 
-            width: 5em; 
-            height: 2.5em; 
+            width: 3em; 
+            height: 4em; 
             border-radius: 14px; 
-            display: flex; 
+            display: block; 
             align-items: center; 
             font-size: 24px; font-weight: 700; 
             backdrop-filter: blur(10px); 
