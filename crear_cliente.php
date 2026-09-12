@@ -16,10 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
     $telefono = $_POST['telefono'];
-    $telefono_empresa = $_POST['telefono_empresa'];
+
     $tipo = $_POST['tipo'];
     $asignado = $_POST['asignado'];
-    $compras = $_POST['compras_realizadas'] ?? 0;
     $direccion = $_POST['direccion'];
     $comentario = $_POST['comentario'] ?? '';
     
@@ -151,10 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <label class="form-label">Dirección de facturación</label>
                                 <textarea name="direccion" class="form-control" placeholder="Ingresa la dirección del cliente..."></textarea>
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Compras realizadas</label>
-                                <input type="number" name="compras_realizadas" class="form-control" value="0" min="0">
-                            </div>
+                            
                         </div>
                     </div>
 
