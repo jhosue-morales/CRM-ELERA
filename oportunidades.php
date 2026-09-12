@@ -92,9 +92,10 @@ $oportunidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <a href="#" class="menu-item"><i class="bi bi-cart3"></i><span>Ventas</span></a>
     </nav>
     <div class="menu-separator"></div>
+    <?php if ($_SESSION['usuario_rol'] === 'admin'): ?>
     <div class="menu-title">Sistema</div>
     <nav class="menu">
-        <?php if ($_SESSION['usuario_rol'] === 'admin'): ?>
+        
             <a href="#" class="menu-item">
                 <i class="bi bi-bar-chart"></i>
                 <span>Reportes</span>
@@ -103,11 +104,13 @@ $oportunidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <i class="bi bi-gear"></i>
                 <span>Configuración</span>
             </a>
-        <?php endif; ?>
+    <?php endif; ?>
     </nav>
     <div class="sidebar-bottom">
         <div class="user">
-            <div class="user-avatar">DM</div>
+            <div class="user-avatar">
+                <a href="logout.php" class="btn-cerrar">CS</a> 
+            </div>
             <div class="user-info"><div class="user-name">Usuario</div><div class="user-role">Administrador</div></div>
         </div>
     </div>

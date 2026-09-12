@@ -596,11 +596,12 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </a>
         </nav>
         <div class="menu-separator"></div>
+        <?php if ($_SESSION['usuario_rol'] === 'admin'): ?>
         <div class="menu-title">
             Sistema
         </div>
         <nav class="menu">
-        <?php if ($_SESSION['usuario_rol'] === 'admin'): ?>
+        
             <a href="#" class="menu-item">
                 <i class="bi bi-bar-chart"></i>
                 <span>Reportes</span>
