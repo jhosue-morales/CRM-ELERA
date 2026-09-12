@@ -17,7 +17,7 @@ if (isset($roles_permitidos)) {
     
     if (!in_array($rol_actual, $roles_permitidos)) {
         // Si no tiene permiso, lo mandamos al dashboard
-        header('Location: dashboard.php?error=sin_permiso');
+        header('Location: clientes.php');
         exit();
     }
 }
