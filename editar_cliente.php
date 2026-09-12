@@ -44,6 +44,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $stmt = $pdo->prepare("UPDATE clientes SET nombre=?, apellido=?, telefono=?, telefono_empresa=?, tipo=?, asignado=?, compras_realizadas=?, direccion=?, comentario=? WHERE id=?");
         $stmt->execute([$nombre, $apellido, $telefono, $telefono_empresa, $tipo, $asignado, $compras, $direccion, $comentario, $id]);
+
+        // --- ACTUALIZAR EL NOMBRE EN LA TABLA OPORTUNIDADES ---
+        // Esto actualiza todas las oportunidades donde el nombre_cliente sea el nombre viejo
+        $nombre_viejo = $cliente['nombre'] . ' ' . $cliente['apellido']; // El nombre antes de editar
+        $nombre_nuevo = $nombre . ' ' . $apellido; // El nombre nuevo
+
+        $stmt_op = $pdo->prepare("UPDATE oportunidades SET nombre_cliente = ? WHERE nombre_cliente = ?");
+        $stmt_op->execute([$nombre_nuevo, $nombre_viejo]);
+// ------------------------------------------------------
         
         // Registrar en historial
         $usuario = $_SESSION['usuario_nombre'] ?? 'Admin';
