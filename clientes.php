@@ -614,7 +614,7 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="sidebar-bottom">
             <div class="user">
                 <div class="user-avatar">
-                    DM
+                   <a href="logout.php" class="btn-cerrar">CS</a> 
                 </div>
                 <div class="user-info">
                     <div class="user-name">
