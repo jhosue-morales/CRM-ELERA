@@ -8,14 +8,6 @@ if (!isset($_SESSION['usuario_id'])) {
 
 require_once 'database.php';
 
-// --- VALIDACIÓN DE ROLES ---
-$roles_permitidos = ['admin', 'vendedor'];
-if (!in_array($_SESSION['usuario_rol'] ?? 'vendedor', $roles_permitidos)) {
-    header('Location: dashboard.php?error=sin_permiso');
-    exit();
-}
-// ---------------------------
-
 $mensaje = '';
 if (isset($_GET['eliminado'])) {
     $mensaje = '<div class="alert alert-success">Cliente eliminado.</div>';
