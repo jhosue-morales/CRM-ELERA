@@ -23,8 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $comentario = $_POST['comentario'] ?? '';
     
     try {
-        $stmt = $pdo->prepare("INSERT INTO clientes (nombre, apellido, telefono, telefono_empresa, tipo, asignado, compras_realizadas, direccion, comentario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$nombre, $apellido, $telefono, $telefono_empresa, $tipo, $asignado, $compras, $direccion, $comentario]);
+        $stmt = $pdo->prepare("INSERT INTO clientes (nombre, apellido, telefono, tipo, asignado, direccion, comentario) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$nombre, $apellido, $telefono, $tipo, $asignado, $direccion, $comentario]);
         
         $clienteId = $pdo->lastInsertId();
         
