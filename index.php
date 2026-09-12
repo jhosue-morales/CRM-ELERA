@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($usuario) {
             $_SESSION['usuario_id'] = $usuario['id'];
             $_SESSION['usuario_nombre'] = $usuario['nombre'];
+            $_SESSION['usuario_email'] = $usuario['email'];
             $_SESSION['usuario_rol'] = $usuario['rol'];
             header('Location: clientes.php');
             exit();

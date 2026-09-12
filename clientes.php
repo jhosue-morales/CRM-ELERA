@@ -8,6 +8,14 @@ if (!isset($_SESSION['usuario_id'])) {
 
 require_once 'database.php';
 
+// --- VALIDACIÓN DE ROLES ---
+$roles_permitidos = ['admin', 'vendedor'];
+if (!in_array($_SESSION['usuario_rol'] ?? 'vendedor', $roles_permitidos)) {
+    header('Location: dashboard.php?error=sin_permiso');
+    exit();
+}
+// ---------------------------
+
 $mensaje = '';
 if (isset($_GET['eliminado'])) {
     $mensaje = '<div class="alert alert-success">Cliente eliminado.</div>';
@@ -26,7 +34,7 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <!-- Bootstrap icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" >
-    <link rel="shortcut icon" href="littlefavicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/littlefavicon.ico" type="image/x-icon">
     <title>CRM LogIn</title>
 
     <style>
@@ -600,14 +608,16 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
             Sistema
         </div>
         <nav class="menu">
+        <?php if ($_SESSION['usuario_rol'] === 'admin'): ?>
             <a href="#" class="menu-item">
                 <i class="bi bi-bar-chart"></i>
                 <span>Reportes</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="/usuarios.php" class="menu-item">
                 <i class="bi bi-gear"></i>
                 <span>Configuración</span>
             </a>
+        <?php endif; ?>
         </nav>
         <div class="sidebar-bottom">
             <div class="user">
