@@ -15,7 +15,10 @@ if (isset($_GET['eliminado'])) {
     $mensaje = '<div class="alert alert-success">Oportunidad eliminada.</div>';
 }
 
-$stmt = $pdo->query("SELECT * FROM oportunidades ORDER BY id DESC");
+$stmt = $pdo->query("SELECT o.*, CONCAT(c.nombre, ' ', c.apellido) AS nombre_cliente_actual 
+    FROM oportunidades o 
+    LEFT JOIN clientes c ON o.nombre_cliente = CONCAT(c.nombre, ' ', c.apellido) 
+    ORDER BY o.id DESC");
 $oportunidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -148,7 +151,7 @@ $oportunidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <tr>
                     <td style="font-weight: 600; color: #2563eb;"><?php echo $op['nombre_oportunidad']; ?></td>
                     <td><?php echo $op['asignado_a']; ?></td>
-                    <td><?php echo $op['nombre_cliente']; ?></td>
+                    <td><?php echo $op['nombre_cliente_actual'] ?? $op['nombre_cliente']; ?></td>
                     <td>
                         <?php
                         $fase = strtolower($op['fase_venta']);
