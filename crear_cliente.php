@@ -2,6 +2,7 @@
 session_start();
 if (!isset($_SESSION['usuario_id'])) { header('Location: index.php'); exit(); }
 require_once 'database.php';
+$usuarios = $pdo->query("SELECT nombre FROM usuarios ORDER BY nombre ASC")->fetchAll();
 
 $tipos = $pdo->query("SELECT * FROM tipos_clientes")->fetchAll();
 
@@ -48,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="shortcut icon" href="/littlefavicon.ico" type="image/x-icon">
-    <title>CRM LogIn</title>
+    <title>CRM | Nuevo cliente</title>
 </head>
 <body>
     <style>
@@ -137,12 +138,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalTipo"><i class="bi bi-plus-lg"></i></button>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3">
                                 <label class="form-label">Asignado a</label>
                                 <select name="asignado" class="form-select">
-                                    <option>Alonso Zapata Olmos</option>
-                                    <option>Diana Moran Carranza</option>
-                                    <option>Oscar Silva</option>
+                                    <option value="">-- Selecciona un usuario --</option>
+                                    <?php foreach ($usuarios as $u): ?>
+                                        <option value="<?php echo $u['nombre']; ?>"><?php echo $u['nombre']; ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="col-md-8">

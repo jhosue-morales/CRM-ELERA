@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- Bootstrap icons -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" >
         <link rel="shortcut icon" href="/littlefavicon.ico" type="image/x-icon">
-        <title>Nueva Oportunidad</title>
+        <title>CRM | Nueva Oportunidad</title> 
         <style>
             * {
                 box-sizing: border-box;

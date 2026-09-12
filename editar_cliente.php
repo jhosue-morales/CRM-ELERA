@@ -7,6 +7,7 @@ if (!isset($_SESSION['usuario_id'])) {
 }
 
 require_once 'database.php';
+$usuarios = $pdo->query("SELECT nombre FROM usuarios ORDER BY nombre ASC")->fetchAll();
 
 $id = $_GET['id'];
 $stmt = $pdo->prepare("SELECT * FROM clientes WHERE id = ?");
@@ -72,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Editar Cliente</title>
+    <title>CRM | Editar Cliente</title> 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
@@ -110,11 +111,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label>Asignado a</label>
+                            <label class="form-label">Asignado a</label>
                             <select name="asignado" class="form-select">
-                                <option <?php if($cliente['asignado'] == 'Alonso Zapata Olmos') echo 'selected'; ?>>Alonso Zapata Olmos</option>
-                                <option <?php if($cliente['asignado'] == 'Diana Moran Carranza') echo 'selected'; ?>>Diana Moran Carranza</option>
-                                <option <?php if($cliente['asignado'] == 'Oscar Silva') echo 'selected'; ?>>Oscar Silva</option>
+                                <option value="">-- Selecciona un usuario --</option>
+                                <?php foreach ($usuarios as $u): ?>
+                                    <option value="<?php echo $u['nombre']; ?>" <?php if($cliente['asignado'] == $u['nombre']) echo 'selected'; ?>>
+                                        <?php echo $u['nombre']; ?>
+                                    </option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
