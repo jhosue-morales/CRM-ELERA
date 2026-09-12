@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="col-md-6">
                                 <label class="form-label">Rol</label>
                                 <select name="rol" class="form-select" required>
-                                    <option value="vendedor" <?php if($usuario['rol'] == 'vendedor') echo 'selected'; ?>>Vendedor</option>
+                                    <option value="usuario" <?php if($usuario['rol'] == 'usuario') echo 'selected'; ?>>Vendedor</option>
                                     <option value="admin" <?php if($usuario['rol'] == 'admin') echo 'selected'; ?>>Administrador</option>
                                 </select>
                             </div>
