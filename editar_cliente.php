@@ -25,7 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $direccion = $_POST['direccion'];
     $comentario = $_POST['comentario'] ?? '';
     
-    try {
+        try {
+        // --- GUARDAR EL NOMBRE VIEJO ANTES DE ACTUALIZAR ---
+        $nombre_viejo = $cliente['nombre'] . ' ' . $cliente['apellido'];
+        $nombre_nuevo = $nombre . ' ' . $apellido;
+        // ---------------------------------------------------
+
         // Comparamos los datos viejos con los nuevos para saber qué cambió
         $cambios = [];
         if ($cliente['nombre'] != $nombre) $cambios[] = 'nombre';
@@ -42,19 +47,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $accion = 'Contacto editado: Cambió ' . implode(', ', $cambios);
         }
         
+        // 1. Actualizamos la tabla CLIENTES
         $stmt = $pdo->prepare("UPDATE clientes SET nombre=?, apellido=?, telefono=?, telefono_empresa=?, tipo=?, asignado=?, compras_realizadas=?, direccion=?, comentario=? WHERE id=?");
         $stmt->execute([$nombre, $apellido, $telefono, $telefono_empresa, $tipo, $asignado, $compras, $direccion, $comentario, $id]);
 
-        // --- ACTUALIZAR EL NOMBRE EN LA TABLA OPORTUNIDADES ---
-        // Esto actualiza todas las oportunidades donde el nombre_cliente sea el nombre viejo
-        $nombre_viejo = $cliente['nombre'] . ' ' . $cliente['apellido']; // El nombre antes de editar
-        $nombre_nuevo = $nombre . ' ' . $apellido; // El nombre nuevo
-
+        // 2. Actualizamos la tabla OPORTUNIDADES (con el nombre viejo y nuevo guardados)
         $stmt_op = $pdo->prepare("UPDATE oportunidades SET nombre_cliente = ? WHERE nombre_cliente = ?");
         $stmt_op->execute([$nombre_nuevo, $nombre_viejo]);
-// ------------------------------------------------------
         
-        // Registrar en historial
+        // 3. Registrar en historial
         $usuario = $_SESSION['usuario_nombre'] ?? 'Admin';
         $stmtHist = $pdo->prepare("INSERT INTO historial_clientes (cliente_id, usuario, accion) VALUES (?, ?, ?)");
         $stmtHist->execute([$id, $usuario, $accion]);
