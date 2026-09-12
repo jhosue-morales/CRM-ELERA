@@ -66,7 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             /* ========================= MAIN ========================= */
-
             .main {
                 min-height: 100vh;
                 padding: 40px 50px;
@@ -77,19 +76,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 margin: auto;
             }
 
-            .page-header {
-                margin-bottom: 25px;
+            .breadcrumb-custom {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 6px;
             }
-
+            .breadcrumb-custom span {
+                color: #64748b;
+            }
             .page-title {
                 margin: 0;
-                font-size: 24px;
+                font-size: 26px;
                 font-weight: 700;
                 color: #0f172a;
             }
-
-            .page-subtitle {
-                margin-top: 5px;
+            .page-description {
+                margin-top: 7px;
+                margin-bottom: 28px;
                 color: #64748b;
                 font-size: 14px;
             }

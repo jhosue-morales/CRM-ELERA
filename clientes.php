@@ -13,7 +13,11 @@ if (isset($_GET['eliminado'])) {
     $mensaje = '<div class="alert alert-success">Cliente eliminado.</div>';
 }
 
-$stmt = $pdo->query("SELECT * FROM clientes ORDER BY id DESC");
+// Consulta con contadores automáticos de ventas (según oportunidades)
+$stmt = $pdo->query("SELECT c.*, 
+    (SELECT COUNT(*) FROM oportunidades o WHERE o.nombre_cliente = CONCAT(c.nombre, ' ', c.apellido) AND o.fase_venta = 'Cerrada ganada') AS ventas_ganadas,
+    (SELECT COUNT(*) FROM oportunidades o WHERE o.nombre_cliente = CONCAT(c.nombre, ' ', c.apellido) AND o.fase_venta = 'Cerrada perdida') AS ventas_perdidas
+    FROM clientes c ORDER BY c.id DESC");
 $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -657,7 +661,8 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <th>Teléfono</th>
                         <th>Tipo</th>
                         <th>Asignado a</th>
-                        <th>Compras Realizadas</th>
+                        <th>Ventas Ganadas</th>
+                        <th>Ventas Perdidas</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -673,7 +678,8 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td><?php echo $cliente['telefono']; ?></td>
                         <td><?php echo $cliente['tipo']; ?></td>
                         <td><?php echo $cliente['asignado']; ?></td>
-                        <td><?php echo $cliente['compras_realizadas']; ?></td>
+                        <td><span class="badge bg-success"><?php echo $cliente['ventas_ganadas']; ?></span></td>
+                        <td><span class="badge bg-danger"><?php echo $cliente['ventas_perdidas']; ?></span></td>
                         <td>
                             <a href="editar_cliente.php?id=<?php echo $cliente['id']; ?>" class="action-btn"><i class="bi bi-pencil"></i></a>
                             <a href="eliminar_cliente.php?id=<?php echo $cliente['id']; ?>" class="action-btn" onclick="return confirm('¿Seguro?')"><i class="bi bi-trash"></i></a>
@@ -729,50 +735,55 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         <?php echo $cliente['asignado']; ?>
                                     </div>
                                 </div>
+                                <div class="data-row">
+                                    <div class="data-label">Ventas Ganadas</div>
+                                    <div class="data-value text-success"><?php echo $cliente['ventas_ganadas']; ?></div>
+                                </div>
+                                <div class="data-row">
+                                    <div class="data-label">Ventas Perdidas</div>
+                                    <div class="data-value text-danger"><?php echo $cliente['ventas_perdidas']; ?></div>
+                                </div>
                             </section>
                             <!-- =================================
-                                 COMENTARIO
+                                 COMENTARIOS
                             ================================== -->
-                            <!-- =================================
-     COMENTARIOS
-================================== -->
-<section class="client-section">
-    <div class="section-title">
-        Comentarios
-    </div>
-    
-    <!-- Lista de comentarios ya existentes -->
-    <div style="max-height: 150px; overflow-y: auto; margin-bottom: 15px;">
-        <?php
-        $stmtCom = $pdo->prepare("SELECT * FROM comentarios_clientes WHERE cliente_id = ? ORDER BY fecha DESC");
-        $stmtCom->execute([$cliente['id']]);
-        $comentarios = $stmtCom->fetchAll(PDO::FETCH_ASSOC);
-        ?>
-        <?php if ($comentarios): ?>
-            <?php foreach ($comentarios as $c): ?>
-                <div style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px; margin-bottom: 8px;">
-                    <div style="font-size: 11px; font-weight: 700; color: #2563eb;">
-                        <?php echo $c['usuario']; ?> <span style="color: #94a3b8; font-weight: 400;"><?php echo $c['fecha']; ?></span>
-                    </div>
-                    <div style="font-size: 13px; color: #1e293b; margin-top: 2px;">
-                        <?php echo $c['comentario']; ?>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p class="text-muted small" style="font-size: 12px;">Sin comentarios aún.</p>
-        <?php endif; ?>
-    </div>
+                            <section class="client-section">
+                                <div class="section-title">
+                                    Comentarios
+                                </div>
+                                
+                                <!-- Lista de comentarios ya existentes -->
+                                <div style="max-height: 150px; overflow-y: auto; margin-bottom: 15px;">
+                                    <?php
+                                    $stmtCom = $pdo->prepare("SELECT * FROM comentarios_clientes WHERE cliente_id = ? ORDER BY fecha DESC");
+                                    $stmtCom->execute([$cliente['id']]);
+                                    $comentarios = $stmtCom->fetchAll(PDO::FETCH_ASSOC);
+                                    ?>
+                                    <?php if ($comentarios): ?>
+                                        <?php foreach ($comentarios as $c): ?>
+                                            <div style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px; margin-bottom: 8px;">
+                                                <div style="font-size: 11px; font-weight: 700; color: #2563eb;">
+                                                    <?php echo $c['usuario']; ?> <span style="color: #94a3b8; font-weight: 400;"><?php echo $c['fecha']; ?></span>
+                                                </div>
+                                                <div style="font-size: 13px; color: #1e293b; margin-top: 2px;">
+                                                    <?php echo $c['comentario']; ?>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <p class="text-muted small" style="font-size: 12px;">Sin comentarios aún.</p>
+                                    <?php endif; ?>
+                                </div>
 
-    <!-- Formulario para agregar comentario -->
-    <form action="agregar_comentario.php" method="POST">
-        <input type="hidden" name="cliente_id" value="<?php echo $cliente['id']; ?>">
-        <textarea name="comentario" class="comment-box" placeholder="Escribe un comentario..." required></textarea>
-        <button type="submit" class="btn btn-save text-white">
-            <i class="bi bi-send me-1"></i> Agregar comentario
-        </button>
-    </form>
-</section>
+                                <!-- Formulario para agregar comentario -->
+                                <form action="agregar_comentario.php" method="POST">
+                                    <input type="hidden" name="cliente_id" value="<?php echo $cliente['id']; ?>">
+                                    <textarea name="comentario" class="comment-box" placeholder="Escribe un comentario..." required></textarea>
+                                    <button type="submit" class="btn btn-save text-white">
+                                        <i class="bi bi-send me-1"></i> Agregar comentario
+                                    </button>
+                                </form>
+                            </section>
                             <!-- =================================
                                  HISTORIAL
                             ================================== -->
@@ -789,7 +800,7 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="history">
                                     <div class="history-item">
                                         <div class="history-user">
-                                            <?php echo $h['usuario']; ?></strong>
+                                            <?php echo $h['usuario']; ?>
                                         </div>
                                         <div class="history-description">
                                             <?php echo $h['accion']; ?>

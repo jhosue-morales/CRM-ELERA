@@ -127,10 +127,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="text" name="telefono" class="form-control" placeholder="Ej. 970 408 931">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Teléfono empresa</label>
-                                <input type="text" name="telefono_empresa" class="form-control" placeholder="Número de empresa">
-                            </div>
-                            <div class="col-md-6">
                                 <label class="form-label">Tipo <span class="required">*</span></label>
                                 <div class="input-group">
                                     <select name="tipo" class="form-select" required>
