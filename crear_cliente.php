@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="breadcrumb-custom">
             Clientes / <span>Nuevo cliente</span>
         </div>
-        <h1 class="page-title">Nuevo cliente</h1>
+        <h1 class="page-title">Registrar Nuevo cliente</h1>
         <p class="page-description">Registra la información del cliente para incorporarlo al sistema.</p>
 
         <div class="form-card">

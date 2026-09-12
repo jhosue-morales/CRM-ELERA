@@ -282,10 +282,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="page-container">
                 <!-- ENCABEZADO -->
                 <div class="breadcrumb-custom">
-                    Oportunidades / <span>Nueva oportunidad</span>
+                    Oportunidades / <span>Registrar Nueva Oportunidad</span>
                 </div>
                 <h1 class="page-title">
-                    Nueva oportunidad
+                    Nueva Oportunidad
                 </h1>
                 <p class="page-description">
                     Registra la información de la oportunidad para incorporarla al sistema.

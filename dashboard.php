@@ -10,6 +10,7 @@ if (!isset($_SESSION['usuario_id'])) {
 $nombre = $_SESSION['usuario_nombre'];
 $rol = $_SESSION['usuario_rol'];
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -20,7 +21,7 @@ $rol = $_SESSION['usuario_rol'];
     <!-- Bootstrap icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" >
     <link rel="shortcut icon" href="/littlefavicon.ico" type="image/x-icon">
-    <title>CRM | Dashboard</title> 
+    <title>CRM | Dashboard</title>
 
     <style>
 
@@ -30,37 +31,33 @@ $rol = $_SESSION['usuario_rol'];
 
         body {
             margin: 0;
-            background: #EEEEEE;
+            background: #f6f8fb;
             font-family: "Inter", "Segoe UI", sans-serif;
             color: #1e293b;
         }
 
-
-        /* =====================================
+        /* =========================
            SIDEBAR
-        ====================================== */
+        ========================= */
+
         .sidebar {
             position: fixed;
             top: 0;
             left: 0;
-
             width: 250px;
             height: 100vh;
-
             background: #ffffff;
             border-right: 1px solid #e5e7eb;
-
             padding: 24px 16px;
-
             display: flex;
             flex-direction: column;
+            z-index: 1000;
         }
 
         .brand {
             display: flex;
             align-items: center;
             gap: 12px;
-
             padding: 0 10px;
             margin-bottom: 35px;
         }
@@ -68,16 +65,12 @@ $rol = $_SESSION['usuario_rol'];
         .brand-logo {
             width: 40px;
             height: 40px;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             border-radius: 9px;
-
             background: #2563eb;
-            color: white;
-
+            color: #ffffff;
             font-size: 13px;
             font-weight: 700;
         }
@@ -85,17 +78,15 @@ $rol = $_SESSION['usuario_rol'];
         .brand-name {
             font-size: 17px;
             font-weight: 700;
+            color: #1e293b;
         }
 
         .menu-title {
             padding: 0 12px;
             margin-bottom: 10px;
-
             color: #94a3b8;
-
             font-size: 11px;
             font-weight: 600;
-
             text-transform: uppercase;
             letter-spacing: .5px;
         }
@@ -110,16 +101,13 @@ $rol = $_SESSION['usuario_rol'];
             display: flex;
             align-items: center;
             gap: 12px;
-
             padding: 11px 12px;
-
             border-radius: 8px;
-
             color: #64748b;
             text-decoration: none;
-
             font-size: 14px;
             font-weight: 500;
+            transition: .2s;
         }
 
         .menu-item i {
@@ -151,25 +139,19 @@ $rol = $_SESSION['usuario_rol'];
             display: flex;
             align-items: center;
             gap: 10px;
-
             padding: 18px 10px 10px;
-
             border-top: 1px solid #e5e7eb;
         }
 
         .user-avatar {
             width: 36px;
             height: 36px;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             border-radius: 50%;
-
             background: #e2e8f0;
             color: #475569;
-
             font-size: 13px;
             font-weight: 600;
         }
@@ -184,10 +166,9 @@ $rol = $_SESSION['usuario_rol'];
             color: #94a3b8;
         }
 
-
-        /* =====================================
-           CONTENIDO
-        ====================================== */
+        /* =========================
+           MAIN
+        ========================= */
 
         .main {
             margin-left: 250px;
@@ -197,324 +178,286 @@ $rol = $_SESSION['usuario_rol'];
 
         .page-header {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-
-            margin-bottom: 25px;
+            align-items: flex-start;
+            margin-bottom: 30px;
         }
 
         .page-title {
             margin: 0;
-
             font-size: 24px;
             font-weight: 700;
+            color: #0f172a;
         }
 
         .page-subtitle {
-            margin-top: 5px;
-
+            margin-top: 6px;
             color: #64748b;
             font-size: 14px;
         }
 
-
-        /* =====================================
-           BOTÓN NUEVO CLIENTE
-        ====================================== */
-
-        .btn-new {
-            background: #2563eb;
-            border: none;
-
+        .logout-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 13px;
+            border: 1px solid #e2e8f0;
             border-radius: 8px;
-
-            padding: 10px 16px;
-
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-
-        /* =====================================
-           TABLA
-        ====================================== */
-
-        .table-container {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            overflow-x: auto;
-        }
-        .table {
-            margin: 0;
-        }
-
-        .table thead th {
-            background: #f8fafc;
-
-            padding: 14px 16px;
-
+            background: #ffffff;
             color: #64748b;
-
+            text-decoration: none;
             font-size: 12px;
             font-weight: 600;
+            transition: .2s;
+        }
 
+        .logout-btn:hover {
+            background: #fef2f2;
+            color: #dc2626;
+            border-color: #fecaca;
+        }
+
+        /* =========================
+           WELCOME CARD
+        ========================= */
+
+        .welcome-card {
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 25px;
+            padding: 27px 30px;
+            border-radius: 12px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+        }
+
+        .welcome-card h2 {
+            margin: 0;
+            font-size: 19px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .welcome-card p {
+            margin: 6px 0 0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .welcome-icon {
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 65px;
+            height: 65px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 28px;
+        }
+
+        /* =========================
+           KPI CARDS
+        ========================= */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 11px;
+            padding: 20px;
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .stat-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 18px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            color: #0f172a;
+            font-size: 25px;
+            font-weight: 700;
+        }
+
+        .stat-description {
+            margin-top: 3px;
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+        /* =========================
+           QUICK ACCESS
+        ========================= */
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 11px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 18px 20px;
             border-bottom: 1px solid #e5e7eb;
         }
 
-        .table tbody td {
-            padding: 15px 16px;
-
-            vertical-align: middle;
-
+        .panel-title {
+            margin: 0;
+            color: #1e293b;
             font-size: 14px;
+            font-weight: 700;
+        }
 
+        .panel-subtitle {
+            margin-top: 4px;
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+        .quick-links {
+            padding: 10px;
+        }
+
+        .quick-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 13px 11px;
+            border-radius: 8px;
+            color: #334155;
+            text-decoration: none;
+            transition: .2s;
+        }
+
+        .quick-link:hover {
+            background: #f8fafc;
+        }
+
+        .quick-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 17px;
+        }
+
+        .quick-link-title {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .quick-link-description {
+            margin-top: 2px;
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+        .quick-arrow {
+            margin-left: auto;
+            color: #cbd5e1;
+        }
+
+        /* =========================
+           INFO PANEL
+        ========================= */
+
+        .info-body {
+            padding: 20px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
             border-bottom: 1px solid #f1f5f9;
         }
 
-        .table tbody tr:last-child td {
+        .info-row:last-child {
             border-bottom: none;
         }
 
-        .client-name {
+        .info-label {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .info-value {
+            color: #334155;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .role-badge {
+            padding: 5px 9px;
+            border-radius: 20px;
+            background: #eff6ff;
             color: #2563eb;
-            font-weight: 600;
-            text-decoration: none;
-
-            cursor: pointer;
-        }
-
-        .client-name:hover {
-            text-decoration: underline;
-        }
-
-
-        /* =====================================
-           BOTONES DE ACCIONES
-        ====================================== */
-
-        .action-btn {
-            width: 32px;
-            height: 32px;
-
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-
-            border: 1px solid #e2e8f0;
-            border-radius: 7px;
-
-            background: white;
-            color: #64748b;
-
-            margin-left: 4px;
-        }
-
-        .action-btn:hover {
-            background: #f8fafc;
-        }
-
-        .action-delete:hover {
-            color: #dc2626;
-            border-color: #fecaca;
-            background: #fef2f2;
-        }
-
-
-        /* =====================================
-           OFFCANVAS CLIENTE
-        ====================================== */
-
-        .offcanvas {
-            width: 480px !important;
-            border-left: 1px solid #e5e7eb;
-        }
-
-        .offcanvas-header {
-            padding: 22px 25px;
-
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .offcanvas-title {
-            font-size: 19px;
+            font-size: 10px;
             font-weight: 700;
         }
 
-        .offcanvas-body {
-            padding: 0;
-        }
-
-
-        /* =====================================
-           SECCIONES DEL CLIENTE
-        ====================================== */
-
-        .client-section {
-            padding: 24px 25px;
-
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .section-title {
-            margin-bottom: 18px;
-
-            color: #64748b;
-
-            font-size: 11px;
-            font-weight: 700;
-
-            text-transform: uppercase;
-            letter-spacing: .5px;
-        }
-
-
-        /* DATOS */
-
-        .data-row {
-            display: flex;
-
-            margin-bottom: 13px;
-
-            font-size: 14px;
-        }
-
-        .data-label {
-            width: 115px;
-
-            color: #64748b;
-            font-weight: 500;
-        }
-
-        .data-value {
-            color: #1e293b;
-            font-weight: 600;
-        }
-
-
-        /* =====================================
-           COMENTARIO
-        ====================================== */
-
-        .comment-box {
-            width: 100%;
-            min-height: 100px;
-
-            padding: 12px;
-
-            resize: vertical;
-
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-
-            background: #f8fafc;
-
-            font-size: 14px;
-        }
-
-        .comment-box:focus {
-            outline: none;
-
-            border-color: #2563eb;
-
-            box-shadow:
-                0 0 0 3px rgba(37, 99, 235, .1);
-        }
-
-        .btn-save {
-            margin-top: 10px;
-
-            background: #2563eb;
-            border: none;
-
-            border-radius: 7px;
-
-            padding: 8px 15px;
-
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-
-        /* =====================================
-           HISTORIAL
-        ====================================== */
-
-        .history {
-            position: relative;
-        }
-
-        .history-item {
-            position: relative;
-
-            padding-left: 25px;
-            padding-bottom: 22px;
-        }
-
-        .history-item::before {
-            content: "";
-
-            position: absolute;
-
-            left: 5px;
-            top: 7px;
-
-            width: 9px;
-            height: 9px;
-
-            border-radius: 50%;
-
-            background: #2563eb;
-        }
-
-        .history-item::after {
-            content: "";
-
-            position: absolute;
-
-            left: 9px;
-            top: 17px;
-
-            width: 1px;
-            height: calc(100% - 5px);
-
-            background: #e2e8f0;
-        }
-
-        .history-item:last-child::after {
-            display: none;
-        }
-
-        .history-user {
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .history-description {
-            margin-top: 3px;
-
-            color: #475569;
-
-            font-size: 13px;
-        }
-
-        .history-date {
-            margin-top: 3px;
-
-            color: #94a3b8;
-
-            font-size: 11px;
-        }
-
-
-        /* =====================================
+        /* =========================
            RESPONSIVE
-        ====================================== */
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
 
         @media (max-width: 768px) {
 
             .sidebar {
                 width: 70px;
+                padding: 24px 10px;
             }
 
             .brand {
@@ -533,113 +476,193 @@ $rol = $_SESSION['usuario_rol'];
                 justify-content: center;
             }
 
-            .user {
-                justify-content: center;
-            }
-
             .main {
                 margin-left: 70px;
                 padding: 20px;
             }
 
-            .offcanvas {
-                width: 100% !important;
+            .page-header {
+                flex-direction: column;
+                gap: 15px;
             }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-icon {
+                display: none;
+            }
+
         }
 
     </style>
 
 </head>
+
+
 <body>
-<!-- =====================================
+
+
+<!-- =========================
      SIDEBAR
-====================================== -->
-    <aside class="sidebar">
-        <div class="brand">
-            <div class="brand-logo">
-                CRM
+========================= -->
+<aside class="sidebar">
+    <div class="brand">
+        <div class="brand-logo">CRM</div>
+        <div class="brand-name">Mi CRM</div>
+    </div>
+    <div class="menu-title">Principal</div>
+    <nav class="menu">
+        <a href="dashboard.php" class="menu-item active"><i class="bi bi-grid"></i><span>Dashboard</span></a>
+        <a href="clientes.php" class="menu-item"><i class="bi bi-people"></i><span>Clientes</span></a>
+        <a href="oportunidades.php" class="menu-item"><i class="bi bi-briefcase"></i><span>Oportunidades</span></a>
+        <a href="#" class="menu-item"><i class="bi bi-file-earmark-text"></i><span>Cotizaciones</span></a>
+        <a href="#" class="menu-item"></a><i class="bi bi-cart3"></i><span>Ventas</span></a>
+    </nav>
+    <div class="menu-separator"></div>
+    <div class="menu-title">Sistema</div>
+    <nav class="menu">
+        <a href="#" class="menu-item"><i class="bi bi-bar-chart"></i><span>Reportes</span></a>
+        <a href="#" class="menu-item"><i class="bi bi-gear"></i><span>Configuración</span></a>
+    </nav>
+    <div class="sidebar-bottom">
+        <div class="user">
+            <div class="user-avatar"><?php echo strtoupper(substr($nombre, 0, 1));?></div>
+            <div class="user-info">
+                <div class="user-name"><?php echo htmlspecialchars($nombre);?></div>
+                <div class="user-role"><?php echo htmlspecialchars($rol);?></div>
             </div>
-            <div class="brand-name">
-                Mi CRM
+        </div>
+    </div>
+</aside>
+<!-- =========================
+     MAIN
+========================= -->
+<main class="main">
+    <!-- HEADER -->
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Dashboard</h1>
+            <div class="page-subtitle">Resumen general de la actividad comercial.</div>
+        </div>
+        <a href="logout.php" class="logout-btn"><i class="bi bi-box-arrow-right"></i>Cerrar sesión</a>
+    </div>
+    <!-- WELCOME -->
+    <div class="welcome-card">
+        <h2>Hola, <?php echo htmlspecialchars($nombre); ?> 👋</h2>
+        <p>Bienvenido al sistema de gestión de clientes y oportunidades.</p>
+        <div class="welcome-icon">
+            <i class="bi bi-bar-chart-line"></i>
+        </div>
+    </div>
+    <!-- STATS -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-top">
+                <div class="stat-label">Clientes</div>
+                <div class="stat-icon"><i class="bi bi-people"></i></div>
             </div>
+            <div class="stat-value">—</div>
+            <div class="stat-description">Clientes registrados</div>
         </div>
-        <div class="menu-title">
-            Principal
+        <div class="stat-card">
+            <div class="stat-top">
+                <div class="stat-label">Oportunidades</div>
+                <div class="stat-icon"><i class="bi bi-briefcase"></i></div>
+            </div>
+            <div class="stat-value">—</div>
+            <div class="stat-description">Oportunidades activas</div>
         </div>
-        <nav class="menu">
-            <a href="dashboard.php" class="menu-item">
-                <i class="bi bi-grid"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="/clientes.php" class="menu-item active">
-                <i class="bi bi-people"></i>
-                <span>Clientes</span>
-            </a>
-            <a href="/oportunidades.php" class="menu-item">
-                <i class="bi bi-briefcase"></i>
-                <span>Oportunidades</span>
-            </a>
-            <a href="#" class="menu-item">
-                <i class="bi bi-file-earmark-text"></i>
-                <span>Cotizaciones</span>
-            </a>
-            <a href="#" class="menu-item">
-                <i class="bi bi-cart3"></i>
-                <span>Ventas</span>
-            </a>
-        </nav>
-        <div class="menu-separator"></div>
-        <div class="menu-title">
-            Sistema
+        <div class="stat-card">
+            <div class="stat-top">
+                <div class="stat-label">Cotizaciones</div>
+                <div class="stat-icon"><i class="bi bi-file-earmark-text"></i></div>
+            </div>
+            <div class="stat-value">—</div>
+            <div class="stat-description">Cotizaciones registradas</div>
         </div>
-        <nav class="menu">
-        <?php if ($_SESSION['usuario_rol'] === 'admin'): ?>
-            <a href="#" class="menu-item">
-                <i class="bi bi-bar-chart"></i>
-                <span>Reportes</span>
-            </a>
-            <a href="/usuarios.php" class="menu-item">
-                <i class="bi bi-gear"></i>
-                <span>Configuración</span>
-            </a>
-        <?php endif; ?>
-        </nav>
-        <div class="sidebar-bottom">
-            <div class="user">
-                <div class="user-avatar">
-                    DM
-                </div>
-                <div class="user-info">
-                    <div class="user-name">
-                        Usuario
+        <div class="stat-card">
+            <div class="stat-top">
+                <div class="stat-label">Ventas</div>
+                <div class="stat-icon"><i class="bi bi-cart-check"></i></div>
+            </div>
+            <div class="stat-value">—</div>
+            <div class="stat-description">Ventas cerradas</div>
+        </div>
+    </div>
+    <!-- CONTENT -->
+    <div class="content-grid">
+        <!-- ACCESOS -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">Accesos rápidos</div>
+                <div class="panel-subtitle">Acciones frecuentes del CRM</div>
+            </div>
+            <div class="quick-links">
+                <a href="clientes.php" class="quick-link">
+                    <div class="quick-icon"><i class="bi bi-people"></i></div>
+                    <div>
+                        <div class="quick-link-title">Gestionar clientes</div>
+                        <div class="quick-link-description">Consultar y administrar contactos.</div>
                     </div>
-                    <div class="user-role">
-                        Administrador
+                    <i class="bi bi-chevron-right quick-arrow"></i>
+                </a>
+                <a href="crear_cliente.php" class="quick-link">
+                    <div class="quick-icon"><i class="bi bi-person-plus"></i></div>
+                    <div>
+                        <div class="quick-link-title">Crear cliente</div>
+                        <div class="quick-link-description">Registrar un nuevo contacto.</div>
                     </div>
+                    <i class="bi bi-chevron-right quick-arrow"></i>
+                </a>
+                <a href="oportunidades.php" class="quick-link">
+                    <div class="quick-icon"><i class="bi bi-briefcase"></i></div>
+                    <div>
+                        <div class="quick-link-title">Oportunidades</div>
+                        <div class="quick-link-description">Revisar y dar seguimiento a ventas.</div>
+                    </div>
+                    <i class="bi bi-chevron-right quick-arrow"></i>
+                </a>
+                <a href="crear_oportunidad.php" class="quick-link">
+                    <div class="quick-icon"><i class="bi bi-plus-circle"></i></div>
+                    <div>
+                        <div class="quick-link-title">Nueva oportunidad</div>
+                        <div class="quick-link-description">Registrar una nueva oportunidad comercial.</div>
+                    </div>
+                    <i class="bi bi-chevron-right quick-arrow"></i>
+                </a>
+            </div>
+        </div>
+        <!-- INFORMACIÓN DEL USUARIO -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">Mi cuenta</div>
+                <div class="panel-subtitle">Información de la sesión actual</div>
+            </div>
+            <div class="info-body">
+                <div class="info-row">
+                    <span class="info-label">Usuario</span>
+                    <span class="info-value"><?php echo htmlspecialchars($nombre);?></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Rol</span>
+                    <span class="role-badge"><?php echo htmlspecialchars($rol);?></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Estado</span>
+                    <span class="info-value">Sesión activa</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Sistema</span>
+                    <span class="info-value">Mi CRM</span>
                 </div>
             </div>
         </div>
-    </aside>
-<!-- =====================================
-     CONTENIDO CLIENTES
-====================================== -->
-                <a href="logout.php" class="btn-cerrar">Cerrar Sesión</a>
-            </div>
-        </div>
-        
-        
-           
-                <h3>✅ Login exitoso</h3>
-                <p>Bienvenido al sistema CRM.</p>
-                <a href="/clientes.php" class="btn btn-primary">Ver Clientes</a>
-            </div>
-            
-          
-                <h3>📋 Próximos pasos</h3>
-                <ul>
-                    <li>Gestión de clientes</li>
-                    <li>Gestión de productos</li>
-                    <li>Sistema de ventas</li>
-   
+    </div>
+</main>
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+></script>
 </body>
 </html>
