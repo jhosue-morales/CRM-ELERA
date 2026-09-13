@@ -80,6 +80,47 @@ $oportunidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
             .menu-item { justify-content: center; }
             .main { margin-left: 70px; padding: 20px; }
         }
+                /* =====================================
+           SECCIONES (COPIADAS DE CLIENTES)
+        ====================================== */
+        .client-section {
+            padding: 24px 25px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .section-title {
+            margin-bottom: 18px;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+        .comment-box {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px;
+            resize: vertical;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: #f8fafc;
+            font-size: 14px;
+        }
+        .comment-box:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+        }
+        .btn-save {
+            background: #2563eb;
+            border: none;
+            border-radius: 7px;
+            padding: 8px 15px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .btn-save:hover {
+            background: #1d4ed8;
+        }
     </style>
 </head>
 <body>
@@ -147,47 +188,141 @@ $oportunidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($oportunidades as $op): ?>
-                <tr>
-                    <td style="font-weight: 600; color: #2563eb;"><?php echo $op['nombre_oportunidad']; ?></td>
-                    <td><?php echo $op['asignado_a']; ?></td>
-                    <td><?php echo $op['nombre_cliente_actual'] ?? $op['nombre_cliente']; ?></td>
-                    <td>
+<?php foreach ($oportunidades as $op): ?>
+<tr>
+    <td style="font-weight: 600; color: #2563eb;"><?php echo $op['nombre_oportunidad']; ?></td>
+    <td><?php echo $op['asignado_a']; ?></td>
+    <td><?php echo $op['nombre_cliente_actual'] ?? $op['nombre_cliente']; ?></td>
+    <td>
+        <?php
+        $fase = strtolower($op['fase_venta']);
+        $clase_fase = 'fase-contactado';
+        if (strpos($fase, 'analizando') !== false) $clase_fase = 'fase-analizando';
+        if (strpos($fase, 'cotizacion') !== false) $clase_fase = 'fase-cotizacion';
+        if (strpos($fase, 'esperando') !== false) $clase_fase = 'fase-esperando';
+        if (strpos($fase, 'negociacion') !== false) $clase_fase = 'fase-negociacion';
+        if (strpos($fase, 'ganada') !== false) $clase_fase = 'fase-ganada';
+        if (strpos($fase, 'perdida') !== false) $clase_fase = 'fase-perdida';
+        ?>
+        <span class="fase-badge <?php echo $clase_fase; ?>"><?php echo $op['fase_venta']; ?></span>
+    </td>
+    <td><?php echo $op['probabilidad'] . '%'; ?></td>
+    <td><?php echo $op['numero_cotizacion']; ?></td>
+    <td><?php echo $op['fecha_creacion']; ?></td>
+    <td><?php echo $op['fecha_estimada_cierre']; ?></td>
+    <td>
+        <?php if (!empty($op['archivo_cotizacion'])): ?>
+            <a href="<?php echo $op['archivo_cotizacion']; ?>" class="btn btn-sm btn-success" target="_blank">
+                <i class="bi bi-download"></i> Descargar
+            </a>
+        <?php else: ?>
+            <span class="text-muted">No hay archivo</span>
+        <?php endif; ?>
+    </td>
+    <td>
+        <button class="action-btn" data-bs-toggle="offcanvas" data-bs-target="#tareas<?php echo $op['id']; ?>">
+            <i class="bi bi-list-task"></i>
+        </button>
+        <a href="editar_oportunidad.php?id=<?php echo $op['id']; ?>" class="action-btn"><i class="bi bi-pencil"></i></a>
+        <a href="eliminar_oportunidad.php?id=<?php echo $op['id']; ?>" class="action-btn" onclick="return confirm('¿Seguro?')"><i class="bi bi-trash"></i></a>
+    </td>
+</tr>
+
+<!-- =====================================
+     PANEL LATERAL DE TAREAS
+====================================== -->
+<div class="offcanvas offcanvas-end" id="tareas<?php echo $op['id']; ?>" tabindex="-1">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">
+            <i class="bi bi-list-task"></i> Tareas: <?php echo $op['nombre_oportunidad']; ?>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+        <!-- =================================
+             LISTA DE TAREAS EXISTENTES
+        ================================== -->
+        <section class="client-section">
+            <div class="section-title">Tareas de Seguimiento</div>
+            <div style="max-height: 400px; overflow-y: auto; margin-bottom: 15px;">
+                <?php
+                $stmtTar = $pdo->prepare("SELECT * FROM tareas_oportunidades WHERE oportunidad_id = ? ORDER BY fecha_realizacion ASC");
+                $stmtTar->execute([$op['id']]);
+                $tareas = $stmtTar->fetchAll(PDO::FETCH_ASSOC);
+                ?>
+                <?php if ($tareas): ?>
+                    <?php foreach ($tareas as $t): ?>
                         <?php
-                        $fase = strtolower($op['fase_venta']);
-                        $clase_fase = 'fase-contactado';
-                        if (strpos($fase, 'analizando') !== false) $clase_fase = 'fase-analizando';
-                        if (strpos($fase, 'cotizacion') !== false) $clase_fase = 'fase-cotizacion';
-                        if (strpos($fase, 'esperando') !== false) $clase_fase = 'fase-esperando';
-                        if (strpos($fase, 'negociacion') !== false) $clase_fase = 'fase-negociacion';
-                        if (strpos($fase, 'ganada') !== false) $clase_fase = 'fase-ganada';
-                        if (strpos($fase, 'perdida') !== false) $clase_fase = 'fase-perdida';
+                        $color_prioridad = 'bg-secondary';
+                        if ($t['prioridad'] == 'Alta') $color_prioridad = 'bg-danger';
+                        if ($t['prioridad'] == 'Media') $color_prioridad = 'bg-warning text-dark';
+                        if ($t['prioridad'] == 'Baja') $color_prioridad = 'bg-info text-dark';
                         ?>
-                        <span class="fase-badge <?php echo $clase_fase; ?>"><?php echo $op['fase_venta']; ?></span>
-                    </td>
-                    <td><?php echo $op['probabilidad'] . '%'; ?></td>
-                    <td><?php echo $op['numero_cotizacion']; ?></td>
-                    <td><?php echo $op['fecha_creacion']; ?></td>
-                    <td><?php echo $op['fecha_estimada_cierre']; ?></td>
-                    <td>
-                        <?php if (!empty($op['archivo_cotizacion'])): ?>
-                            <a href="<?php echo $op['archivo_cotizacion']; ?>" class="btn btn-sm btn-success" target="_blank">
-                                <i class="bi bi-download"></i> Descargar
-                            </a>
-                        <?php else: ?>
-                            <span class="text-muted">No hay archivo</span>
-                        <?php endif; ?>
-                    </td>
-                    <td>
-                        <a href="editar_oportunidad.php?id=<?php echo $op['id']; ?>" class="action-btn"><i class="bi bi-pencil"></i></a>
-                        <a href="eliminar_oportunidad.php?id=<?php echo $op['id']; ?>" class="action-btn" onclick="return confirm('¿Seguro?')"><i class="bi bi-trash"></i></a>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
+                        <div style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; margin-bottom: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                <span class="badge <?php echo $color_prioridad; ?>"><?php echo $t['prioridad']; ?></span>
+                                <span style="font-size: 11px; color: #94a3b8;"><?php echo $t['fecha_realizacion']; ?></span>
+                            </div>
+                            <div style="font-size: 13px; color: #1e293b; margin-bottom: 5px;">
+                                <?php echo $t['tarea']; ?>
+                            </div>
+                            <div style="font-size: 11px; color: #94a3b8;">
+                                Asignada por: <strong><?php echo $t['usuario']; ?></strong> el <?php echo $t['fecha_creacion']; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="text-muted small" style="font-size: 12px;">Sin tareas de seguimiento aún.</p>
+                <?php endif; ?>
+            </div>
+
+            <!-- Formulario para agregar nueva tarea -->
+            <form action="agregar_tarea.php" method="POST">
+                <input type="hidden" name="oportunidad_id" value="<?php echo $op['id']; ?>">
+                
+                <div class="mb-3">
+                    <label class="form-label">Tarea</label>
+                    <textarea name="tarea" class="comment-box" placeholder="Describe la tarea a realizar..." required></textarea>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Prioridad</label>
+                        <select name="prioridad" class="form-select" required>
+                            <option value="Baja">Baja</option>
+                            <option value="Media" selected>Media</option>
+                            <option value="Alta">Alta</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Fecha de realización</label>
+                        <input type="date" name="fecha_realizacion" class="form-control" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-save text-white w-100">
+                    <i class="bi bi-plus-circle me-1"></i> Agregar Tarea
+                </button>
+            </form>
+        </section>
+    </div>
+</div>
+<?php endforeach; ?>
             </tbody>
         </table>
     </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    <?php if (isset($_GET['abierto']) && $_GET['abierto'] > 0): ?>
+        var miOffcanvas = document.getElementById('tareas<?php echo $_GET['abierto']; ?>');
+        if (miOffcanvas) {
+            var instancia = new bootstrap.Offcanvas(miOffcanvas);
+            instancia.show();
+        }
+    <?php endif; ?>
+});
+</script>
 </body>
 </html>
