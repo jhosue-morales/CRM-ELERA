@@ -132,7 +132,7 @@ $oportunidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <a href="dashboard.php" class="menu-item"><i class="bi bi-grid"></i><span>Dashboard</span></a>
         <a href="clientes.php" class="menu-item"><i class="bi bi-people"></i><span>Clientes</span></a>
         <a href="oportunidades.php" class="menu-item active"><i class="bi bi-briefcase"></i><span>Oportunidades</span></a>
-        <a href="#" class="menu-item"><i class="bi bi-file-earmark-text"></i><span>Cotizaciones</span></a>
+        <a href="calendario.php" class="menu-item active"><i class="bi bi-calendar-event"></i><span>Calendario</span></a>
         <a href="#" class="menu-item"><i class="bi bi-cart3"></i><span>Ventas</span></a>
     </nav>
     <div class="menu-separator"></div>
@@ -277,33 +277,58 @@ $oportunidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
 
             <!-- Formulario para agregar nueva tarea -->
-            <form action="agregar_tarea.php" method="POST">
-                <input type="hidden" name="oportunidad_id" value="<?php echo $op['id']; ?>">
-                
-                <div class="mb-3">
-                    <label class="form-label">Tarea</label>
-                    <textarea name="tarea" class="comment-box" placeholder="Describe la tarea a realizar..." required></textarea>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Prioridad</label>
-                        <select name="prioridad" class="form-select" required>
-                            <option value="Baja">Baja</option>
-                            <option value="Media" selected>Media</option>
-                            <option value="Alta">Alta</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Fecha de realización</label>
-                        <input type="date" name="fecha_realizacion" class="form-control" required>
-                    </div>
-                </div>
-                
-                <button type="submit" class="btn btn-save text-white w-100">
-                    <i class="bi bi-plus-circle me-1"></i> Agregar Tarea
-                </button>
-            </form>
+            <!-- Formulario para agregar nueva tarea -->
+<form action="agregar_tarea.php" method="POST">
+    <input type="hidden" name="oportunidad_id" value="<?php echo $op['id']; ?>">
+    
+    <div class="mb-3">
+        <label class="form-label">Tarea</label>
+        <textarea name="tarea" class="comment-box" placeholder="Describe la tarea a realizar..." required></textarea>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Prioridad</label>
+            <select name="prioridad" class="form-select" required>
+                <option value="Baja">Baja</option>
+                <option value="Media" selected>Media</option>
+                <option value="Alta">Alta</option>
+            </select>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Fecha de realización</label>
+            <input type="date" name="fecha_realizacion" class="form-control" required>
+        </div>
+    </div>
+
+    <?php if ($_SESSION['usuario_rol'] === 'admin'): ?>
+        <!-- SOLO ADMIN puede elegir a quién asignar la tarea -->
+        <div class="mb-3">
+            <label class="form-label">Asignado a</label>
+            <select name="asignado_a" class="form-select" required>
+                <option value="">-- Selecciona un usuario --</option>
+                <?php
+                $usuarios = $pdo->query("SELECT nombre FROM usuarios ORDER BY nombre ASC")->fetchAll();
+                foreach ($usuarios as $u):
+                ?>
+                    <option value="<?php echo $u['nombre']; ?>"><?php echo $u['nombre']; ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    <?php else: ?>
+        <!-- VENDEDOR: se asigna automáticamente a sí mismo -->
+        <input type="hidden" name="asignado_a" value="<?php echo $_SESSION['usuario_nombre']; ?>">
+        <div class="mb-3">
+            <label class="form-label">Asignado a</label>
+            <input type="text" class="form-control" value="<?php echo $_SESSION['usuario_nombre']; ?>" disabled>
+            <small class="text-muted">Esta tarea será asignada automáticamente a ti.</small>
+        </div>
+    <?php endif; ?>
+    
+    <button type="submit" class="btn btn-save text-white w-100">
+        <i class="bi bi-plus-circle me-1"></i> Agregar Tarea
+    </button>
+</form>
         </section>
     </div>
 </div>

@@ -590,10 +590,7 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <i class="bi bi-briefcase"></i>
                 <span>Oportunidades</span>
             </a>
-            <a href="#" class="menu-item">
-                <i class="bi bi-file-earmark-text"></i>
-                <span>Cotizaciones</span>
-            </a>
+            <a href="calendario.php" class="menu-item active"><i class="bi bi-calendar-event"></i><span>Calendario</span></a>
             <a href="#" class="menu-item">
                 <i class="bi bi-cart3"></i>
                 <span>Ventas</span>
