@@ -2,6 +2,7 @@
 session_start();
 if (!isset($_SESSION['usuario_id'])) { header('Location: index.php'); exit(); }
 require_once 'database.php';
+$usuarios = $pdo->query("SELECT nombre FROM usuarios ORDER BY nombre ASC")->fetchAll();
 
 $id = $_GET['id'];
 $stmt = $pdo->prepare("SELECT * FROM oportunidades WHERE id = ?");
@@ -371,9 +372,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="col-md-6 mb-3">
                                 <label>Asignado a</label>
                                 <select name="asignado_a" class="form-select">
-                                    <option <?php if($oportunidad['asignado_a'] == 'Alonso Zapata Olmos') echo 'selected'; ?>>Alonso Zapata Olmos</option>
-                                    <option <?php if($oportunidad['asignado_a'] == 'Diana Moran Carranza') echo 'selected'; ?>>Diana Moran Carranza</option>
-                                    <option <?php if($oportunidad['asignado_a'] == 'Oscar Silva') echo 'selected'; ?>>Oscar Silva</option>
+                                    <option value="">-- Selecciona un usuario --</option>
+                                    <?php foreach ($usuarios as $u): ?>
+                                        <option value="<?php echo $u['nombre']; ?>" <?php if($oportunidad['asignado_a'] == $u['nombre']) echo 'selected'; ?>>
+                                            <?php echo $u['nombre']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -381,8 +385,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <select name="nombre_cliente" class="form-select" required>
                                     <option value="">-- Selecciona un cliente --</option>
                                     <?php foreach ($lista_clientes as $cliente): ?>
-                                        <option <?php echo $cliente['nombre'] . ' ' . $cliente['apellido']; ?>" <?php if($oportunidad['nombre_cliente'] == $cliente['nombre'] . ' ' . $cliente['apellido']) echo 'selected'; ?>>
+                                        <option value="<?php echo $cliente['nombre'] . ' ' . $cliente['apellido']; ?>" <?php if($oportunidad['nombre_cliente'] == $cliente['nombre'] . ' ' . $cliente['apellido']) echo 'selected'; ?>>
                                             <?php echo $cliente['nombre'] . ' ' . $cliente['apellido']; ?>
+                                        </option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>

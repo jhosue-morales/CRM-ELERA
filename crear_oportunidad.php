@@ -2,6 +2,7 @@
 session_start();
 if (!isset($_SESSION['usuario_id'])) { header('Location: index.php'); exit(); }
 require_once 'database.php';
+$usuarios = $pdo->query("SELECT nombre FROM usuarios ORDER BY nombre ASC")->fetchAll();
 
 // Consultar todos los clientes para el desplegable
 $stmt_clientes = $pdo->query("SELECT id, nombre, apellido FROM clientes ORDER BY nombre ASC");
@@ -319,13 +320,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <label class="form-label">Nombre de la oportunidad</label>
                                     <input type="text" name="nombre_oportunidad" class="form-control" placeholder="Ej. Implementación de cámaras" required>
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Asignado a</label>
+                                <div class="col-md-6 mb-3">
+                                    <label>Asignado a</label>
                                     <select name="asignado_a" class="form-select">
-                                        <option>Alonso Zapata Olmos</option>
-                                        <option>Diana Moran Carranza</option>
-                                        <option>Oscar Silva</option>
-                                    </select> 
+                                        <option value="">-- Selecciona un usuario --</option>
+                                        <?php foreach ($usuarios as $u): ?>
+                                            <option value="<?php echo $u['nombre']; ?>"><?php echo $u['nombre']; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Nombre de contacto / cliente</label>
