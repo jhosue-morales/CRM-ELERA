@@ -517,7 +517,7 @@ $rol = $_SESSION['usuario_rol'];
         <a href="dashboard.php" class="menu-item active"><i class="bi bi-grid"></i><span>Dashboard</span></a>
         <a href="clientes.php" class="menu-item"><i class="bi bi-people"></i><span>Clientes</span></a>
         <a href="oportunidades.php" class="menu-item"><i class="bi bi-briefcase"></i><span>Oportunidades</span></a>
-        <a href="calendario.php" class="menu-item active"><i class="bi bi-calendar-event"></i><span>Calendario</span></a>
+        <a href="calendario.php" class="menu-item"><i class="bi bi-calendar-event"></i><span>Calendario</span></a>
         <a href="#" class="menu-item"></a><i class="bi bi-cart3"></i><span>Ventas</span></a>
     </nav>
     <div class="menu-separator"></div>
