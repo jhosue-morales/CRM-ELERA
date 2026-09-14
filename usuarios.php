@@ -190,6 +190,7 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <a href="usuarios.php" class="menu-item active" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Configuración"><i class="bi bi-gear"></i><span>Configuración</span></a>
         <?php endif; ?>    
         </nav>
+        <div class="sidebar-bottom">
         <div class="user-dropdown">
         <button class="user-button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <div class="user-avatar"><?php echo strtoupper(substr($_SESSION['usuario_nombre'] ?? 'U', 0, 2)); ?></div>

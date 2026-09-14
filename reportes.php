@@ -182,7 +182,6 @@ $tareas_pendientes = $pdo->query("SELECT t.*, o.nombre_oportunidad
         <a href="clientes.php" class="menu-item"><i class="bi bi-people"></i><span>Clientes</span></a>
         <a href="oportunidades.php" class="menu-item"><i class="bi bi-briefcase"></i><span>Oportunidades</span></a>
         <a href="calendario.php" class="menu-item"><i class="bi bi-calendar-event"></i><span>Calendario</span></a>
-        <a href="#" class="menu-item"><i class="bi bi-cart3"></i><span>Ventas</span></a>
     </nav>
     <div class="menu-separator"></div>
     <?php if ($_SESSION['usuario_rol'] === 'admin'): ?>
@@ -192,6 +191,7 @@ $tareas_pendientes = $pdo->query("SELECT t.*, o.nombre_oportunidad
         <a href="usuarios.php" class="menu-item"><i class="bi bi-gear"></i><span>Usuarios</span></a>
     </nav>
     <?php endif; ?>
+    <div class="sidebar-bottom">
     <div class="user-dropdown">
         <button class="user-button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <div class="user-avatar"><?php echo strtoupper(substr($_SESSION['usuario_nombre'] ?? 'U', 0, 2)); ?></div>
@@ -209,6 +209,7 @@ $tareas_pendientes = $pdo->query("SELECT t.*, o.nombre_oportunidad
                 </a>
             </li>
         </ul>
+    </div>
     </div>
 </aside>
 
@@ -325,22 +326,28 @@ $tareas_pendientes = $pdo->query("SELECT t.*, o.nombre_oportunidad
 </script>
 
 <!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-<script>
-    const sidebar = document.getElementById('sidebar');
-    const main = document.querySelector('.main');
-    const btnToggleSidebar = document.getElementById('btnToggleSidebar');
-    
-    if (btnToggleSidebar) {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script>
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(
+            tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl)
+        );
+    </script>
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const main = document.querySelector('.main');
+        const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+        
         btnToggleSidebar.addEventListener('click', function () {
             sidebar.classList.toggle('collapsed');
             main.classList.toggle('sidebar-collapsed');
             const estaColapsado = sidebar.classList.contains('collapsed');
-            btnToggleSidebar.title = estaColapsado ? 'Expandir menú' : 'Contraer menú';
+            btnToggleSidebar.title = estaColapsado
+            ? 'Expandir menú'
+            : 'Contraer menú';
         });
-    }
-</script>      
-<script>
+    </script>
+    <script>
         const popoverTriggerList = document.querySelectorAll(
             '[data-bs-toggle="popover"]'
         );
@@ -353,6 +360,6 @@ $tareas_pendientes = $pdo->query("SELECT t.*, o.nombre_oportunidad
                 container: 'body'
             })
         );
-</script>
+    </script>
 </body>
 </html>
