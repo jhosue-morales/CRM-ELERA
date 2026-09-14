@@ -159,6 +159,10 @@ $tareas_pendientes = $pdo->query("SELECT t.*, o.nombre_oportunidad
             .main { margin-left: 0; padding: 20px; }
             .stats-grid { grid-template-columns: 1fr; }
         }
+        .user-dropdown {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 10px;
+}
     </style>
 </head>
 <body>
