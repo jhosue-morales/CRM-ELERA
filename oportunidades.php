@@ -540,10 +540,9 @@ $oportunidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="menu-title">Principal</div>
         <nav class="menu">
             <a href="dashboard.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Dashboard"><i class="bi bi-grid"></i><span>Dashboard</span></a>
-            <a href="clientes.php" class="menu-item active" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Clientes"><i class="bi bi-people"></i><span>Clientes</span></a>
-            <a href="oportunidades.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Oportunidades"><i class="bi bi-briefcase"></i><span>Oportunidades</span></a>
+            <a href="clientes.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Clientes"><i class="bi bi-people"></i><span>Clientes</span></a>
+            <a href="oportunidades.php" class="menu-item active" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Oportunidades"><i class="bi bi-briefcase"></i><span>Oportunidades</span></a>
             <a href="calendario.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Calendario"><i class="bi bi-calendar-event"></i><span>Calendario</span></a>
-            <a href="#" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Ventas"><i class="bi bi-cart3"></i><span>Ventas</span></a>
         </nav>
         <div class="menu-separator"></div>
         <?php if ($_SESSION['usuario_rol'] === 'admin'): ?>

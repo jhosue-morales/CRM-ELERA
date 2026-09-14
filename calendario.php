@@ -24,6 +24,7 @@ $tareas_json = json_encode($tareas);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- FullCalendar CSS -->
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/littlefavicon.ico" type="image/x-icon">
     <title>Calendario de Tareas - CRM</title>
     <style>
         * { box-sizing: border-box; }
@@ -124,10 +125,9 @@ $tareas_json = json_encode($tareas);
         <div class="menu-title">Principal</div>
         <nav class="menu">
             <a href="dashboard.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Dashboard"><i class="bi bi-grid"></i><span>Dashboard</span></a>
-            <a href="clientes.php" class="menu-item active" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Clientes"><i class="bi bi-people"></i><span>Clientes</span></a>
+            <a href="clientes.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Clientes"><i class="bi bi-people"></i><span>Clientes</span></a>
             <a href="oportunidades.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Oportunidades"><i class="bi bi-briefcase"></i><span>Oportunidades</span></a>
-            <a href="calendario.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Calendario"><i class="bi bi-calendar-event"></i><span>Calendario</span></a>
-            <a href="#" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Ventas"><i class="bi bi-cart3"></i><span>Ventas</span></a>
+            <a href="calendario.php" class="menu-item active" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Calendario"><i class="bi bi-calendar-event"></i><span>Calendario</span></a>
         </nav>
         <div class="menu-separator"></div>
         <?php if ($_SESSION['usuario_rol'] === 'admin'): ?>
