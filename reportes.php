@@ -55,7 +55,7 @@ $top_vendedores = $pdo->query("SELECT asignado_a,
 $tareas_pendientes = $pdo->query("SELECT t.*, o.nombre_oportunidad 
     FROM tareas_oportunidades t 
     LEFT JOIN oportunidades o ON t.oportunidad_id = o.id 
-    WHERE t.fecha_realizacion >= CURDATE() 
+    WHERE t.estado = 'Pendiente'
     ORDER BY t.fecha_realizacion ASC 
     LIMIT 10")->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -162,6 +162,29 @@ $tareas_pendientes = $pdo->query("SELECT t.*, o.nombre_oportunidad
         .user-dropdown {
     border-top: 1px solid #e5e7eb;
     padding-top: 10px;
+}
+.user-button {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: transparent;
+    color: #1e293b;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+.user-button:hover {
+    background: #f1f5f9;
 }
     </style>
 </head>
@@ -281,7 +304,7 @@ $tareas_pendientes = $pdo->query("SELECT t.*, o.nombre_oportunidad
 
     <!-- TAREAS PENDIENTES -->
     <div class="card-custom">
-        <h3>Tareas Pendientes (Próximas)</h3>
+        <h3>Tareas Pendientes de Realizar</h3>
         <?php if ($tareas_pendientes): ?>
             <?php foreach ($tareas_pendientes as $t): ?>
                 <?php
