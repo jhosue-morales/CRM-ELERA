@@ -263,6 +263,9 @@ $tareas_pendientes = $pdo->query("SELECT t.*, o.nombre_oportunidad
 <a href="reporte_clientes.php" class="btn btn-info text-white">
     <i class="bi bi-people-fill me-1"></i> Reporte de Clientes
 </a>
+<a href="reporte_actividad.php" class="btn btn-secondary">
+    <i class="bi bi-person-check me-1"></i> Reporte de Actividad
+</a>
 </div>
     <!-- TARJETAS DE RESUMEN -->
     <div class="stats-grid">
