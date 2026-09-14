@@ -36,41 +36,105 @@ $rol = $_SESSION['usuario_rol'];
             color: #1e293b;
         }
 
-        /* =========================
+        /* =====================================
            SIDEBAR
-        ========================= */
-
+        ====================================== */
         .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            height: 100vh;
-            background: #ffffff;
-            border-right: 1px solid #e5e7eb;
-            padding: 24px 16px;
-            display: flex;
-            flex-direction: column;
-            z-index: 1000;
-        }
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 250px;
+    height: 100vh;
+
+    background: #ffffff;
+    border-right: 1px solid #e5e7eb;
+
+    padding: 24px 16px;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+
+    transition: width 0.25s ease;
+}
 
         .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0 10px;
-            margin-bottom: 35px;
-        }
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 10px;
+    margin-bottom: 35px;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 35px;
+
+    flex-shrink: 0;
+}
+
+.sidebar-header .brand {
+    margin-bottom: 0;
+}
+
+
+/* SIDEBAR COLAPSADO */
+.sidebar.collapsed .sidebar-header {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar.collapsed .brand {
+    margin-bottom: 0;
+}
+
+.sidebar.collapsed .sidebar-toggle {
+    margin-left: 0;
+}
+
+        .sidebar-toggle {
+    margin-left: auto;
+    border: none;
+    background: transparent;
+    color: #64748b;
+    font-size: 20px;
+}
+
+.sidebar-toggle:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+.sidebar.collapsed .brand {
+    padding: 0;
+}
+
+.sidebar.collapsed .sidebar-toggle {
+    margin-left: 0;
+}
 
         .brand-logo {
             width: 40px;
             height: 40px;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             border-radius: 9px;
+
             background: #2563eb;
-            color: #ffffff;
+            color: white;
+
             font-size: 13px;
             font-weight: 700;
         }
@@ -78,15 +142,17 @@ $rol = $_SESSION['usuario_rol'];
         .brand-name {
             font-size: 17px;
             font-weight: 700;
-            color: #1e293b;
         }
 
         .menu-title {
             padding: 0 12px;
             margin-bottom: 10px;
+
             color: #94a3b8;
+
             font-size: 11px;
             font-weight: 600;
+
             text-transform: uppercase;
             letter-spacing: .5px;
         }
@@ -101,13 +167,16 @@ $rol = $_SESSION['usuario_rol'];
             display: flex;
             align-items: center;
             gap: 12px;
+
             padding: 11px 12px;
+
             border-radius: 8px;
+
             color: #64748b;
             text-decoration: none;
+
             font-size: 14px;
             font-weight: 500;
-            transition: .2s;
         }
 
         .menu-item i {
@@ -132,39 +201,133 @@ $rol = $_SESSION['usuario_rol'];
         }
 
         .sidebar-bottom {
-            margin-top: auto;
-        }
+    margin-top: auto;
+    padding-top: 20px;
+}
 
-        .user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 18px 10px 10px;
-            border-top: 1px solid #e5e7eb;
-        }
+.user-dropdown {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 10px;
+}
 
-        .user-avatar {
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: #e2e8f0;
-            color: #475569;
-            font-size: 13px;
-            font-weight: 600;
-        }
+.user-button {
+    width: 100%;
 
-        .user-name {
-            font-size: 13px;
-            font-weight: 600;
-        }
+    display: flex;
+    align-items: center;
 
-        .user-role {
-            font-size: 11px;
-            color: #94a3b8;
-        }
+    gap: 10px;
+
+    padding: 10px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: transparent;
+    color: #1e293b;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.user-button:hover {
+    background: #f1f5f9;
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+
+    min-width: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #e2e8f0;
+    color: #475569;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.user-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.user-name {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.user-role {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.user-chevron {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.user-menu {
+    width: calc(100% - 32px);
+    margin: 0 16px !important;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, .08);
+}
+
+.user-menu .dropdown-item {
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* SIDEBAR COLAPSADO */
+.sidebar.collapsed {
+    width: 70px;
+}
+
+/* Ocultar textos */
+.sidebar.collapsed .brand-name,
+.sidebar.collapsed .menu-title,
+.sidebar.collapsed .menu-item span,
+.sidebar.collapsed .user-info {
+    display: none;
+}
+
+/* Centrar elementos */
+.sidebar.collapsed .brand {
+    justify-content: center;
+    padding: 0;
+}
+
+.sidebar.collapsed .menu-item {
+    justify-content: center;
+}
+
+.sidebar.collapsed .user {
+    justify-content: center;
+}
+
+/* CONTENIDO */
+.main {
+    margin-left: 250px;
+    min-height: 100vh;
+    padding: 35px;
+    transition: margin-left 0.25s ease;
+}
+
+.main.sidebar-collapsed {
+    margin-left: 70px;
+}
 
         /* =========================
            MAIN
@@ -221,8 +384,7 @@ $rol = $_SESSION['usuario_rol'];
            WELCOME CARD
         ========================= */
 
-        .welcome-card {
-            position: relative;
+        .welcome-card {   
             overflow: hidden;
             margin-bottom: 25px;
             padding: 27px 30px;
@@ -453,28 +615,45 @@ $rol = $_SESSION['usuario_rol'];
 
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 968px) {
 
-            .sidebar {
-                width: 70px;
-                padding: 24px 10px;
-            }
+    .sidebar {
+        width: 70%;
+        height: 100vh;
 
-            .brand {
-                justify-content: center;
-                padding: 0;
-            }
+        position: fixed;
 
-            .brand-name,
-            .menu-title,
-            .menu-item span,
-            .user-info {
-                display: none;
-            }
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
 
-            .menu-item {
-                justify-content: center;
-            }
+    .sidebar .brand-name,
+    .sidebar .menu-title,
+    .sidebar .menu-item span,
+    .sidebar .user-info {
+        display: block;
+    }
+
+    .sidebar-header {
+        width: 100%;
+    }
+
+    .sidebar-header .brand {
+        margin-bottom: 0;
+    }
+
+    .sidebar .brand {
+        justify-content: flex-start;
+        padding: 0 10px;
+    }
+
+    .sidebar .menu-item {
+        justify-content: flex-start;
+    }
+
+    .sidebar .user {
+        justify-content: flex-start;
+    }
 
             .main {
                 margin-left: 70px;
@@ -504,38 +683,59 @@ $rol = $_SESSION['usuario_rol'];
 <body>
 
 
-<!-- =========================
+<!-- =====================================
      SIDEBAR
-========================= -->
-<aside class="sidebar">
-    <div class="brand">
-        <div class="brand-logo">CRM</div>
-        <div class="brand-name">Mi CRM</div>
-    </div>
-    <div class="menu-title">Principal</div>
-    <nav class="menu">
-        <a href="dashboard.php" class="menu-item active"><i class="bi bi-grid"></i><span>Dashboard</span></a>
-        <a href="clientes.php" class="menu-item"><i class="bi bi-people"></i><span>Clientes</span></a>
-        <a href="oportunidades.php" class="menu-item"><i class="bi bi-briefcase"></i><span>Oportunidades</span></a>
-        <a href="calendario.php" class="menu-item"><i class="bi bi-calendar-event"></i><span>Calendario</span></a>
-        <a href="#" class="menu-item"></a><i class="bi bi-cart3"></i><span>Ventas</span></a>
-    </nav>
-    <div class="menu-separator"></div>
-    <div class="menu-title">Sistema</div>
-    <nav class="menu">
-        <a href="#" class="menu-item"><i class="bi bi-bar-chart"></i><span>Reportes</span></a>
-        <a href="#" class="menu-item"><i class="bi bi-gear"></i><span>Configuración</span></a>
-    </nav>
-    <div class="sidebar-bottom">
-        <div class="user">
-            <div class="user-avatar"><?php echo strtoupper(substr($nombre, 0, 1));?></div>
-            <div class="user-info">
-                <div class="user-name"><?php echo htmlspecialchars($nombre);?></div>
-                <div class="user-role"><?php echo htmlspecialchars($rol);?></div>
+====================================== -->
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <div class="brand">
+                <div class="brand-logo">CRM</div>
+                <div class="brand-name">Mi CRM</div>
             </div>
+        
+            <button id="btnToggleSidebar" class="sidebar-toggle" type="button" title="Contraer menú">
+                <i class="bi bi-list"></i>
+            </button>
         </div>
+        <div class="menu-title">Principal</div>
+        <nav class="menu">
+            <a href="dashboard.php" class="menu-item active" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Dashboard"><i class="bi bi-grid"></i><span>Dashboard</span></a>
+            <a href="clientes.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Clientes"><i class="bi bi-people"></i><span>Clientes</span></a>
+            <a href="oportunidades.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Oportunidades"><i class="bi bi-briefcase"></i><span>Oportunidades</span></a>
+            <a href="calendario.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Calendario"><i class="bi bi-calendar-event"></i><span>Calendario</span></a>
+            <a href="#" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Ventas"><i class="bi bi-cart3"></i><span>Ventas</span></a>
+        </nav>
+        <div class="menu-separator"></div>
+        <?php if ($_SESSION['usuario_rol'] === 'admin'): ?>
+        <div class="menu-title">Sistema</div>
+        <nav class="menu">
+            <a href="#" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Reportes"><i class="bi bi-bar-chart"></i><span>Reportes</span></a></a>
+            <a href="/usuarios.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Configuración"><i class="bi bi-gear"></i><span>Configuración</span></a>
+        <?php endif; ?>
+        </nav>
+        <div class="sidebar-bottom">
+
+    <div class="user-dropdown">
+        <button class="user-button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="user-avatar">DM</div>
+            <div class="user-info"><div class="user-name">Usuario</div>
+                <div class="user-role">Administrador</div>
+            </div>
+            <i class="bi bi-chevron-down user-chevron"></i>
+        </button>
+
+        <ul class="dropdown-menu user-menu">
+            <li>
+                <a class="dropdown-item text-danger" href="logout.php">
+                    <i class="bi bi-box-arrow-right me-2"></i>
+                    Cerrar sesión
+                </a>
+            </li>
+        </ul>
     </div>
-</aside>
+
+</div>
+    </aside>
 <!-- =========================
      MAIN
 ========================= -->
@@ -546,15 +746,11 @@ $rol = $_SESSION['usuario_rol'];
             <h1 class="page-title">Dashboard</h1>
             <div class="page-subtitle">Resumen general de la actividad comercial.</div>
         </div>
-        <a href="logout.php" class="logout-btn"><i class="bi bi-box-arrow-right"></i>Cerrar sesión</a>
     </div>
     <!-- WELCOME -->
     <div class="welcome-card">
         <h2>Hola, <?php echo htmlspecialchars($nombre); ?> 👋</h2>
         <p>Bienvenido al sistema de gestión de clientes y oportunidades.</p>
-        <div class="welcome-icon">
-            <i class="bi bi-bar-chart-line"></i>
-        </div>
     </div>
     <!-- STATS -->
     <div class="stats-grid">
@@ -661,8 +857,41 @@ $rol = $_SESSION['usuario_rol'];
         </div>
     </div>
 </main>
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-></script>
+<!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script>
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(
+            tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl)
+        );
+    </script>
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const main = document.querySelector('.main');
+        const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+        
+        btnToggleSidebar.addEventListener('click', function () {
+            sidebar.classList.toggle('collapsed');
+            main.classList.toggle('sidebar-collapsed');
+            const estaColapsado = sidebar.classList.contains('collapsed');
+            btnToggleSidebar.title = estaColapsado
+            ? 'Expandir menú'
+            : 'Contraer menú';
+        });
+    </script>
+    <script>
+        const popoverTriggerList = document.querySelectorAll(
+            '[data-bs-toggle="popover"]'
+        );
+
+        const popoverList = [...popoverTriggerList].map(
+            popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl, {
+                trigger: 'hover focus',
+                html: true,
+                placement: 'right',
+                container: 'body'
+            })
+        );
+    </script>
 </body>
 </html>

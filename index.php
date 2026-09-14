@@ -4,7 +4,7 @@ require_once 'database.php';
 
 // Si ya está logueado, ir al clientes.php
 if (isset($_SESSION['usuario_id'])) {
-    header('Location: clientes.php');
+    header('Location: dashboard.php');
     exit();
 }
 
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['usuario_nombre'] = $usuario['nombre'];
             $_SESSION['usuario_email'] = $usuario['email'];
             $_SESSION['usuario_rol'] = $usuario['rol'];
-            header('Location: clientes.php');
+            header('Location: dashboard.php');
             exit();
         } else {
             $error = '❌ Email o contraseña incorrectos';
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- Bootstrap icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" >
     <link rel="shortcut icon" href="/littlefavicon.ico" type="image/x-icon">
-    <title>CRM LogIn</title>
+    <title>CRM | Iniciar Sesión</title>
 </head>
 <body>
     <style>
@@ -65,6 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             --primary: #11468F;
             --primary-dark: #041562;
             --text-muted: #EEEEEE;
+            --danger: #F50A0A;
+            --danger-dark: #960000;
         }
 
         .left-panel { 
@@ -139,15 +141,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); 
         } 
         
-        .forgot-link { 
-            color: var(--primary); 
-            text-decoration: none; 
-            font-size: 0.9rem; 
-            font-weight: 600; 
-        } 
-        .forgot-link:hover { 
-            color: var(--primary-dark); 
-        } 
         .btn-login { 
             height: 52px; 
             border: none; 
@@ -159,9 +152,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             transition: all 0.2s ease; 
         } 
         .btn-login:hover { 
-            background: var(--primary-dark); 
+            background: var(--danger); 
             transform: translateY(-1px);
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2); 
+            box-shadow: var(--danger-dark); 
             color: #EEEEEE;
         } 
         .security-info { 
@@ -222,7 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="left-content"> 
                     <!-- LOGO --> 
                         <div class="left-logo mb-4">
-                            <img src="/" alt="" srcset="" width="100%">
+                            <img src="/Screenshot_1.png" alt="" srcset="" width="100%">
                         </div> 
                         <h1 class="left-title mb-4"> 
                             Gestiona tu negocio. <br> <span style="color:#60a5fa;"> Más simple. </span> 

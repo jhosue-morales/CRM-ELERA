@@ -31,9 +31,8 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- Bootstrap icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" >
     <link rel="shortcut icon" href="/littlefavicon.ico" type="image/x-icon">
-    <title>CRM | LogIn</title> 
-
-    <style>
+    <title>CRM | Clientes</title>
+<style>
 
         * {
             box-sizing: border-box;
@@ -51,30 +50,87 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
            SIDEBAR
         ====================================== */
         .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
 
-            width: 250px;
-            height: 100vh;
+    width: 250px;
+    height: 100vh;
 
-            background: #ffffff;
-            border-right: 1px solid #e5e7eb;
+    background: #ffffff;
+    border-right: 1px solid #e5e7eb;
 
-            padding: 24px 16px;
+    padding: 24px 16px;
 
-            display: flex;
-            flex-direction: column;
-        }
+    display: flex;
+    flex-direction: column;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+
+    transition: width 0.25s ease;
+}
 
         .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 10px;
+    margin-bottom: 35px;
+}
 
-            padding: 0 10px;
-            margin-bottom: 35px;
-        }
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 35px;
+
+    flex-shrink: 0;
+}
+
+.sidebar-header .brand {
+    margin-bottom: 0;
+}
+
+
+/* SIDEBAR COLAPSADO */
+.sidebar.collapsed .sidebar-header {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar.collapsed .brand {
+    margin-bottom: 0;
+}
+
+.sidebar.collapsed .sidebar-toggle {
+    margin-left: 0;
+}
+
+        .sidebar-toggle {
+    margin-left: auto;
+    border: none;
+    background: transparent;
+    color: #64748b;
+    font-size: 20px;
+}
+
+.sidebar-toggle:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+.sidebar.collapsed .brand {
+    padding: 0;
+}
+
+.sidebar.collapsed .sidebar-toggle {
+    margin-left: 0;
+}
 
         .brand-logo {
             width: 40px;
@@ -155,46 +211,133 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         .sidebar-bottom {
-            margin-top: auto;
-        }
+    margin-top: auto;
+    padding-top: 20px;
+}
 
-        .user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+.user-dropdown {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 10px;
+}
 
-            padding: 18px 10px 10px;
+.user-button {
+    width: 100%;
 
-            border-top: 1px solid #e5e7eb;
-        }
+    display: flex;
+    align-items: center;
 
-        .user-avatar {
-            width: 36px;
-            height: 36px;
+    gap: 10px;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+    padding: 10px;
 
-            border-radius: 50%;
+    border: none;
+    border-radius: 8px;
 
-            background: #e2e8f0;
-            color: #475569;
+    background: transparent;
+    color: #1e293b;
 
-            font-size: 13px;
-            font-weight: 600;
-        }
+    text-align: left;
 
-        .user-name {
-            font-size: 13px;
-            font-weight: 600;
-        }
+    cursor: pointer;
+}
 
-        .user-role {
-            font-size: 11px;
-            color: #94a3b8;
-        }
+.user-button:hover {
+    background: #f1f5f9;
+}
 
+.user-avatar {
+    width: 36px;
+    height: 36px;
+
+    min-width: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #e2e8f0;
+    color: #475569;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.user-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.user-name {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.user-role {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.user-chevron {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.user-menu {
+    width: calc(100% - 32px);
+    margin: 0 16px !important;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, .08);
+}
+
+.user-menu .dropdown-item {
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* SIDEBAR COLAPSADO */
+.sidebar.collapsed {
+    width: 70px;
+}
+
+/* Ocultar textos */
+.sidebar.collapsed .brand-name,
+.sidebar.collapsed .menu-title,
+.sidebar.collapsed .menu-item span,
+.sidebar.collapsed .user-info {
+    display: none;
+}
+
+/* Centrar elementos */
+.sidebar.collapsed .brand {
+    justify-content: center;
+    padding: 0;
+}
+
+.sidebar.collapsed .menu-item {
+    justify-content: center;
+}
+
+.sidebar.collapsed .user {
+    justify-content: center;
+}
+
+/* CONTENIDO */
+.main {
+    margin-left: 250px;
+    min-height: 100vh;
+    padding: 35px;
+    transition: margin-left 0.25s ease;
+}
+
+.main.sidebar-collapsed {
+    margin-left: 70px;
+}
 
         /* =====================================
            CONTENIDO
@@ -226,6 +369,30 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             color: #64748b;
             font-size: 14px;
+        }
+
+        .logout-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            color: #64748b;
+            text-decoration: none;
+            transition: .2s;
+            margin-bottom: 10px;
+            border-radius: 8px;
+
+            padding: 10px 16px;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: #fef2f2;
+            color: #dc2626;
+            border-color: #fecaca;
         }
 
 
@@ -521,42 +688,73 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
         /* =====================================
            RESPONSIVE
         ====================================== */
+        @media (max-width: 1100px) {
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
 
         @media (max-width: 768px) {
 
-            .sidebar {
-                width: 70px;
+    .sidebar {
+        width: 70%;
+        height: 100vh;
+
+        position: fixed;
+
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .sidebar .brand-name,
+    .sidebar .menu-title,
+    .sidebar .menu-item span,
+    .sidebar .user-info {
+        display: block;
+    }
+
+    .sidebar-header {
+        width: 100%;
+    }
+
+    .sidebar-header .brand {
+        margin-bottom: 0;
+    }
+
+    .sidebar .brand {
+        justify-content: flex-start;
+        padding: 0 10px;
+    }
+
+    .sidebar .menu-item {
+        justify-content: flex-start;
+    }
+
+    .sidebar .user {
+        justify-content: flex-start;
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .page-header {
+                flex-direction: column;
+                gap: 15px;
             }
 
-            .brand {
-                justify-content: center;
-                padding: 0;
-            }
+    .offcanvas {
+        width: 100% !important;
+    }
+}
 
-            .brand-name,
-            .menu-title,
-            .menu-item span,
-            .user-info {
-                display: none;
-            }
-
-            .menu-item {
-                justify-content: center;
-            }
-
-            .user {
-                justify-content: center;
-            }
-
-            .main {
-                margin-left: 70px;
-                padding: 20px;
-            }
-
-            .offcanvas {
-                width: 100% !important;
-            }
-        }
 
     </style>
 
@@ -565,67 +763,65 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <!-- =====================================
      SIDEBAR
 ====================================== -->
-    <aside class="sidebar">
-        <div class="brand">
-            <div class="brand-logo">
-                CRM
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <div class="brand">
+                <div class="brand-logo">CRM</div>
+                <div class="brand-name">Mi CRM</div>
             </div>
-            <div class="brand-name">
-                Mi CRM
-            </div>
+        
+            <button id="btnToggleSidebar" class="sidebar-toggle" type="button" title="Contraer menú">
+                <i class="bi bi-list"></i>
+            </button>
         </div>
-        <div class="menu-title">
-            Principal
-        </div>
+        <div class="menu-title">Principal</div>
         <nav class="menu">
-            <a href="dashboard.php" class="menu-item">
-                <i class="bi bi-grid"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="/clientes.php" class="menu-item active">
-                <i class="bi bi-people"></i>
-                <span>Clientes</span>
-            </a>
-            <a href="/oportunidades.php" class="menu-item">
-                <i class="bi bi-briefcase"></i>
-                <span>Oportunidades</span>
-            </a>
-            <a href="calendario.php" class="menu-item"><i class="bi bi-calendar-event"></i><span>Calendario</span></a>
-            <a href="#" class="menu-item">
-                <i class="bi bi-cart3"></i>
-                <span>Ventas</span>
-            </a>
+            <a href="dashboard.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Dashboard"><i class="bi bi-grid"></i><span>Dashboard</span></a>
+            <a href="clientes.php" class="menu-item active" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Clientes"><i class="bi bi-people"></i><span>Clientes</span></a>
+            <a href="oportunidades.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Oportunidades"><i class="bi bi-briefcase"></i><span>Oportunidades</span></a>
+            <a href="calendario.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Calendario"><i class="bi bi-calendar-event"></i><span>Calendario</span></a>
+            <a href="#" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Ventas"><i class="bi bi-cart3"></i><span>Ventas</span></a>
         </nav>
         <div class="menu-separator"></div>
         <?php if ($_SESSION['usuario_rol'] === 'admin'): ?>
-        <div class="menu-title">
-            Sistema
-        </div>
+        <div class="menu-title">Sistema</div>
         <nav class="menu">
-        
-            <a href="#" class="menu-item">
-                <i class="bi bi-bar-chart"></i>
-                <span>Reportes</span>
-            </a>
-            <a href="/usuarios.php" class="menu-item">
-                <i class="bi bi-gear"></i>
-                <span>Configuración</span>
-            </a>
-        <?php endif; ?>
+            <a href="#" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Reportes"><i class="bi bi-bar-chart"></i><span>Reportes</span></a>
+            <a href="/usuarios.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Configuración"><i class="bi bi-gear"></i><span>Configuración</span></a>
         </nav>
         <div class="sidebar-bottom">
-            <div class="user">
-                <div class="user-avatar"><a href="logout.php" class="text-decoration-none text-dark">CS</a></div>
-                <div class="user-info">
-                    <div class="user-name">
-                        Usuario
-                    </div>
-                    <div class="user-role">
-                        Administrador
-                    </div>
+
+    <div class="user-dropdown">
+        <button class="user-button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+            <div class="user-avatar">
+                DM
+            </div>
+
+            <div class="user-info">
+                <div class="user-name">
+                    Usuario
+                </div>
+                <div class="user-role">
+                    Administrador
                 </div>
             </div>
-        </div>
+
+            <i class="bi bi-chevron-down user-chevron"></i>
+
+        </button>
+
+        <ul class="dropdown-menu user-menu">
+            <li>
+                <a class="dropdown-item text-danger" href="logout.php">
+                    <i class="bi bi-box-arrow-right me-2"></i>
+                    Cerrar sesión
+                </a>
+            </li>
+        </ul>
+    </div>
+
+</div>
     </aside>
 <!-- =====================================
      CONTENIDO CLIENTES
@@ -634,18 +830,10 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <!-- HEADER -->
         <div class="page-header">
             <div>
-                <h1 class="page-title">
-                    Clientes
-                </h1>
-                <div class="page-subtitle">
-                    Gestiona y consulta la información de tus clientes.
-                </div>
+                <h1 class="page-title">Clientes</h1>
+                <div class="page-subtitle">Gestiona y consulta la información de tus clientes.</div>
             </div>
-            <button class="btn btn-primary btn-new">
-                <a href="crear_cliente.php" class="text-white text-decoration-none">
-                    <i class="bi bi-plus-lg me-1"></i> Nuevo cliente    
-                </a>
-            </button>
+            <a href="crear_cliente.php" class="btn btn-primary btn-new"><i class="bi bi-plus-lg me-1"></i> Nuevo cliente</a>
         </div>
         <?php echo $mensaje; ?>
         <!-- TABLA -->
@@ -667,7 +855,7 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php foreach ($clientes as $cliente): ?>
                     <tr>
                         <td>
-                            <button class="btn client-name" data-bs-toggle="offcanvas" href="#vista<?php echo $cliente['id']; ?>">
+                            <button type="button" class="btn client-name" data-bs-toggle="offcanvas" href="#vista<?php echo $cliente['id']; ?>">
                                 <?php echo $cliente['nombre']; ?>
                             </button>
                         </td>
@@ -691,6 +879,7 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <h5 class="offcanvas-title">
                                <i class="bi bi-person-circle"></i>  <?php echo $cliente['nombre'] . ' ' . $cliente['apellido']; ?>
                             </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
                         </div>
                         <div class="offcanvas-body">
                             <!-- =================================
@@ -818,21 +1007,44 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </tbody>
             </table>
         </div>
+        
     </main>
+    
     <!-- Bootstrap JS -->
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script>
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(
+            tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl)
+        );
     </script>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        <?php if (isset($_GET['abierto']) && $_GET['abierto'] > 0): ?>
-            var miOffcanvas = document.getElementById('vista<?php echo $_GET['abierto']; ?>');
-            if (miOffcanvas) {
-                var instancia = new bootstrap.Offcanvas(miOffcanvas);
-                instancia.show();
-            }
-        <?php endif; ?>
-    });
-</script>
+        const sidebar = document.getElementById('sidebar');
+        const main = document.querySelector('.main');
+        const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+        
+        btnToggleSidebar.addEventListener('click', function () {
+            sidebar.classList.toggle('collapsed');
+            main.classList.toggle('sidebar-collapsed');
+            const estaColapsado = sidebar.classList.contains('collapsed');
+            btnToggleSidebar.title = estaColapsado
+            ? 'Expandir menú'
+            : 'Contraer menú';
+        });
+    </script>
+    <script>
+        const popoverTriggerList = document.querySelectorAll(
+            '[data-bs-toggle="popover"]'
+        );
+
+        const popoverList = [...popoverTriggerList].map(
+            popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl, {
+                trigger: 'hover focus',
+                html: true,
+                placement: 'right',
+                container: 'body'
+            })
+        );
+    </script>
 </body>
 </html>
