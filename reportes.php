@@ -250,6 +250,11 @@ $tareas_pendientes = $pdo->query("SELECT t.*, o.nombre_oportunidad
             <div class="page-subtitle">Resumen general de la actividad del CRM.</div>
         </div>
     </div>
+    <div class="mb-4">
+    <a href="reporte_vendedores.php" class="btn btn-primary">
+        <i class="bi bi-people me-1"></i> Ver Reporte por Vendedor
+    </a>
+</div>
 
     <!-- TARJETAS DE RESUMEN -->
     <div class="stats-grid">
