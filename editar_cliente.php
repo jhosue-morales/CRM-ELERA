@@ -20,10 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
     $telefono = $_POST['telefono'];
-    $telefono_empresa = $_POST['telefono_empresa'];
     $tipo = $_POST['tipo'];
     $asignado = $_POST['asignado'];
-    $compras = $_POST['compras_realizadas'];
     $direccion = $_POST['direccion'];
     $comentario = $_POST['comentario'] ?? '';
     
@@ -40,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($cliente['telefono'] != $telefono) $cambios[] = 'teléfono';
         if ($cliente['tipo'] != $tipo) $cambios[] = 'tipo';
         if ($cliente['asignado'] != $asignado) $cambios[] = 'asignado';
-        if ($cliente['compras_realizadas'] != $compras) $cambios[] = 'compras';
         if ($cliente['direccion'] != $direccion) $cambios[] = 'dirección';
         if ($cliente['comentario'] != $comentario) $cambios[] = 'comentario';
         
@@ -50,8 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         // 1. Actualizamos la tabla CLIENTES
-        $stmt = $pdo->prepare("UPDATE clientes SET nombre=?, apellido=?, telefono=?, telefono_empresa=?, tipo=?, asignado=?, compras_realizadas=?, direccion=?, comentario=? WHERE id=?");
-        $stmt->execute([$nombre, $apellido, $telefono, $telefono_empresa, $tipo, $asignado, $compras, $direccion, $comentario, $id]);
+        $stmt = $pdo->prepare("UPDATE clientes SET nombre=?, apellido=?, telefono=?, tipo=?, asignado=?, direccion=?, comentario=? WHERE id=?");
+        $stmt->execute([$nombre, $apellido, $telefono, $tipo, $asignado, $direccion, $comentario, $id]);
 
         // 2. Actualizamos la tabla OPORTUNIDADES (con el nombre viejo y nuevo guardados)
         $stmt_op = $pdo->prepare("UPDATE oportunidades SET nombre_cliente = ? WHERE nombre_cliente = ?");
@@ -399,11 +396,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <label class="form-label">Dirección de facturación</label>
                                         <textarea name="direccion" class="form-control"><?php echo $cliente['direccion']; ?></textarea>
                                     </div>
-                                    <!-- COMPRAS -->
-                                    <div class="col-md-4">
-                                        <label class="form-label">Compras realizadas</label>
-                                        <input type="number" name="compras_realizadas" value="<?php echo $cliente['compras_realizadas']; ?>" class="form-control" min="0">
-                                    </div>
+                                    
                                 </div>
                             </div>
                             <!-- BOTONES -->
