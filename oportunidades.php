@@ -686,8 +686,10 @@ $oportunidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         if ($t['prioridad'] == 'Alta') $color_prioridad = 'bg-danger';
                         if ($t['prioridad'] == 'Media') $color_prioridad = 'bg-warning text-dark';
                         if ($t['prioridad'] == 'Baja') $color_prioridad = 'bg-info text-dark';
+                        
+                        $tachado = ($t['estado'] == 'Realizada') ? 'text-decoration: line-through; opacity: 0.6;' : '';
                         ?>
-                        <div style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; margin-bottom: 8px;">
+                        <div style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; margin-bottom: 8px; <?php echo $tachado; ?>">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
                                 <span class="badge <?php echo $color_prioridad; ?>"><?php echo $t['prioridad']; ?></span>
                                 <span style="font-size: 11px; color: #94a3b8;"><?php echo $t['fecha_realizacion']; ?></span>
@@ -695,8 +697,19 @@ $oportunidades = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <div style="font-size: 13px; color: #1e293b; margin-bottom: 5px;">
                                 <?php echo $t['tarea']; ?>
                             </div>
-                            <div style="font-size: 11px; color: #94a3b8;">
-                                Asignada por: <strong><?php echo $t['usuario']; ?></strong> el <?php echo $t['fecha_creacion']; ?>
+                            <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">
+                                Asignada a: <strong><?php echo $t['asignado_a'] ?? $t['usuario']; ?></strong>
+                            </div>
+                            <div>
+                                <?php if ($t['estado'] == 'Pendiente'): ?>
+                                    <a href="cambiar_estado_tarea.php?id=<?php echo $t['id']; ?>&estado=Realizada" class="btn btn-sm btn-success">
+                                        <i class="bi bi-check-circle"></i> Marcar como realizada
+                                    </a>
+                                <?php else: ?>
+                                    <a href="cambiar_estado_tarea.php?id=<?php echo $t['id']; ?>&estado=Pendiente" class="btn btn-sm btn-secondary">
+                                        <i class="bi bi-arrow-counterclockwise"></i> Marcar como pendiente
+                                    </a>
+                                <?php endif; ?>
                             </div>
                         </div>
                     <?php endforeach; ?>

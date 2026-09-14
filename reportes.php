@@ -67,6 +67,7 @@ $tareas_pendientes = $pdo->query("SELECT t.*, o.nombre_oportunidad
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="shortcut icon" href="/littlefavicon.ico" type="image/x-icon">
     <title>CRM | Reportes</title>
     <style>
         * { box-sizing: border-box; }
@@ -191,14 +192,23 @@ $tareas_pendientes = $pdo->query("SELECT t.*, o.nombre_oportunidad
         <a href="usuarios.php" class="menu-item"><i class="bi bi-gear"></i><span>Usuarios</span></a>
     </nav>
     <?php endif; ?>
-    <div class="sidebar-bottom">
-        <div class="user">
-            <div class="user-avatar"><a href="logout.php" class="text-decoration-none text-dark">CS</a></div>
-            <div class="user-info">
-                <div class="user-name"><?php echo $_SESSION['usuario_nombre'] ?? 'Usuario'; ?></div>
+    <div class="user-dropdown">
+        <button class="user-button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="user-avatar"><?php echo strtoupper(substr($_SESSION['usuario_nombre'] ?? 'U', 0, 2)); ?></div>
+            <div class="user-info"><div class="user-name"><?php echo $_SESSION['usuario_nombre'] ?? 'Usuario'; ?></div>
                 <div class="user-role"><?php echo ucfirst($_SESSION['usuario_rol'] ?? 'Admin'); ?></div>
             </div>
-        </div>
+            <i class="bi bi-chevron-down user-chevron"></i>
+        </button>
+
+        <ul class="dropdown-menu user-menu">
+            <li>
+                <a class="dropdown-item text-danger" href="logout.php">
+                    <i class="bi bi-box-arrow-right me-2"></i>
+                    Cerrar sesión
+                </a>
+            </li>
+        </ul>
     </div>
 </aside>
 
@@ -329,6 +339,20 @@ $tareas_pendientes = $pdo->query("SELECT t.*, o.nombre_oportunidad
             btnToggleSidebar.title = estaColapsado ? 'Expandir menú' : 'Contraer menú';
         });
     }
+</script>      
+<script>
+        const popoverTriggerList = document.querySelectorAll(
+            '[data-bs-toggle="popover"]'
+        );
+
+        const popoverList = [...popoverTriggerList].map(
+            popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl, {
+                trigger: 'hover focus',
+                html: true,
+                placement: 'right',
+                container: 'body'
+            })
+        );
 </script>
 </body>
 </html>

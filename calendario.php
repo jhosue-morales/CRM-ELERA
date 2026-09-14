@@ -133,24 +133,28 @@ $tareas_json = json_encode($tareas);
         <?php if ($_SESSION['usuario_rol'] === 'admin'): ?>
         <div class="menu-title">Sistema</div>
         <nav class="menu">
-            <a href="#" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Reportes"><i class="bi bi-bar-chart"></i><span>Reportes</span></a>
+            <a href="reportes.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Reportes"><i class="bi bi-bar-chart"></i><span>Reportes</span></a>
             <a href="usuarios.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Configuración"><i class="bi bi-gear"></i><span>Configuración</span></a>
         <?php endif; ?>  
         </nav>
-        <div class="sidebar-bottom">
-            <div class="user-dropdown">
-                <button class="user-button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <div class="user-avatar">DM</div>
-                    <div class="user-info">
-                        <div class="user-name">Usuario</div>
-                        <div class="user-role">Administrador</div>
-                    </div>
-                    <i class="bi bi-chevron-down user-chevron"></i>
-                </button>
-                <ul class="dropdown-menu user-menu">
-                    <li><a class="dropdown-item text-danger" href="logout.php"><i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión</a></li>
-                </ul>
+        <div class="user-dropdown">
+        <button class="user-button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="user-avatar"><?php echo strtoupper(substr($_SESSION['usuario_nombre'] ?? 'U', 0, 2)); ?></div>
+            <div class="user-info"><div class="user-name"><?php echo $_SESSION['usuario_nombre'] ?? 'Usuario'; ?></div>
+                <div class="user-role"><?php echo ucfirst($_SESSION['usuario_rol'] ?? 'Admin'); ?></div>
             </div>
+            <i class="bi bi-chevron-down user-chevron"></i>
+        </button>
+
+        <ul class="dropdown-menu user-menu">
+            <li>
+                <a class="dropdown-item text-danger" href="logout.php">
+                    <i class="bi bi-box-arrow-right me-2"></i>
+                    Cerrar sesión
+                </a>
+            </li>
+        </ul>
+    </div>
         </div>
     </aside>
 
