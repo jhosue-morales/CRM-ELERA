@@ -788,6 +788,7 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <nav class="menu">
             <a href="#" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Reportes"><i class="bi bi-bar-chart"></i><span>Reportes</span></a>
             <a href="/usuarios.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Configuración"><i class="bi bi-gear"></i><span>Configuración</span></a>
+        <?php endif; ?>
         </nav>
         <div class="sidebar-bottom">
 

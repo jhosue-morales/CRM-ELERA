@@ -135,6 +135,7 @@ $tareas_json = json_encode($tareas);
         <nav class="menu">
             <a href="#" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Reportes"><i class="bi bi-bar-chart"></i><span>Reportes</span></a>
             <a href="usuarios.php" class="menu-item" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Configuración"><i class="bi bi-gear"></i><span>Configuración</span></a>
+        <?php endif; ?>  
         </nav>
         <div class="sidebar-bottom">
             <div class="user-dropdown">
