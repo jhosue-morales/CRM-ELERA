@@ -9,6 +9,32 @@ if (!isset($_SESSION['usuario_id'])) {
 
 $nombre = $_SESSION['usuario_nombre'];
 $rol = $_SESSION['usuario_rol'];
+require_once 'database.php';
+// ==========================================
+// CONSULTAS PARA EL DASHBOARD DEL USUARIO
+// ==========================================
+
+$usuario_actual = $_SESSION['usuario_nombre'];
+
+// 1. Clientes registrados por este usuario
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM historial_clientes WHERE usuario = ? AND accion LIKE 'Contacto creado%'");
+$stmt->execute([$usuario_actual]);
+$clientes_registrados = $stmt->fetchColumn();
+
+// 2. Oportunidades activas (que NO están cerradas ni ganadas ni perdidas)
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM oportunidades WHERE asignado_a = ? AND fase_venta NOT IN ('Cerrada ganada', 'Cerrada perdida')");
+$stmt->execute([$usuario_actual]);
+$oportunidades_activas = $stmt->fetchColumn();
+
+// 3. Tareas pendientes asignadas a este usuario
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM tareas_oportunidades WHERE asignado_a = ? AND estado = 'Pendiente'");
+$stmt->execute([$usuario_actual]);
+$tareas_pendientes = $stmt->fetchColumn();
+
+// 4. Oportunidades ganadas por este usuario
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM oportunidades WHERE asignado_a = ? AND fase_venta = 'Cerrada ganada'");
+$stmt->execute([$usuario_actual]);
+$oportunidades_ganadas = $stmt->fetchColumn();
 ?>
 
 <!DOCTYPE html>
@@ -758,7 +784,7 @@ $rol = $_SESSION['usuario_rol'];
                 <div class="stat-label">Clientes</div>
                 <div class="stat-icon"><i class="bi bi-people"></i></div>
             </div>
-            <div class="stat-value">—</div>
+            <div class="stat-value"><?php echo $clientes_registrados; ?></div>
             <div class="stat-description">Clientes registrados</div>
         </div>
         <div class="stat-card">
@@ -766,23 +792,23 @@ $rol = $_SESSION['usuario_rol'];
                 <div class="stat-label">Oportunidades</div>
                 <div class="stat-icon"><i class="bi bi-briefcase"></i></div>
             </div>
-            <div class="stat-value">—</div>
+            <div class="stat-value"><?php echo $oportunidades_activas; ?></div>
             <div class="stat-description">Oportunidades activas</div>
         </div>
         <div class="stat-card">
             <div class="stat-top">
-                <div class="stat-label">Cotizaciones</div>
+                <div class="stat-label">Tareas</div>
                 <div class="stat-icon"><i class="bi bi-file-earmark-text"></i></div>
             </div>
-            <div class="stat-value">—</div>
-            <div class="stat-description">Cotizaciones registradas</div>
+            <div class="stat-value"><?php echo $tareas_pendientes; ?></div>
+            <div class="stat-description">Tareas pendientes</div>
         </div>
         <div class="stat-card">
             <div class="stat-top">
                 <div class="stat-label">Ventas</div>
                 <div class="stat-icon"><i class="bi bi-cart-check"></i></div>
             </div>
-            <div class="stat-value">—</div>
+            <div class="stat-value"><?php echo $oportunidades_ganadas; ?></div>
             <div class="stat-description">Ventas cerradas</div>
         </div>
     </div>
