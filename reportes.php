@@ -250,11 +250,6 @@ $tareas_pendientes = $pdo->query("SELECT t.*, o.nombre_oportunidad
             <div class="page-subtitle">Resumen general de la actividad del CRM.</div>
         </div>
     </div>
-    <div class="mb-4">
-    <a href="reporte_vendedores.php" class="btn btn-primary">
-        <i class="bi bi-people me-1"></i> Ver Reporte por Vendedor
-    </a>
-</div>
 <div class="mb-4">
     <a href="reporte_vendedores.php" class="btn btn-primary me-2">
         <i class="bi bi-people me-1"></i> Reporte por Vendedor
@@ -262,6 +257,9 @@ $tareas_pendientes = $pdo->query("SELECT t.*, o.nombre_oportunidad
     <a href="reporte_fases.php" class="btn btn-success">
         <i class="bi bi-funnel me-1"></i> Reporte por Fases
     </a>
+    <a href="reporte_tareas.php" class="btn btn-warning">
+    <i class="bi bi-list-task me-1"></i> Reporte de Tareas
+</a>
 </div>
     <!-- TARJETAS DE RESUMEN -->
     <div class="stats-grid">
