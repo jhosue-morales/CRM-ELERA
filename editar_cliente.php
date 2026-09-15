@@ -350,6 +350,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </div>
                                 </div>
                                 <div class="row g-4">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">DNI / RUC</label>
+                                        <div class="input-group">
+                                            <input type="text" id="doc_numero" class="form-control" placeholder="Ej. 12345678" maxlength="11">
+                                            <button type="button" class="btn btn-outline-primary" onclick="consultarDocumento()">
+                                                <i class="bi bi-search"></i> Consultar
+                                            </button>
+                                        </div>
+                                        <small class="text-muted">8 dígitos para DNI, 11 para RUC.</small>
+                                    </div>
                                     <!-- NOMBRE -->
                                     <div class="col-md-6">
                                         <label class="form-label">Nombre</label>
@@ -431,5 +441,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+function consultarDocumento() {
+    const numero = document.getElementById('doc_numero').value.trim();
+    
+    if (numero.length !== 8 && numero.length !== 11) {
+        alert('El DNI debe tener 8 dígitos y el RUC 11 dígitos.');
+        return;
+    }
+
+    const tipo = (numero.length === 8) ? 'dni' : 'ruc';
+    
+    const boton = event.target;
+    const textoOriginal = boton.innerHTML;
+    boton.innerHTML = '<i class="bi bi-hourglass-split"></i> Consultando...';
+    boton.disabled = true;
+
+    fetch(`consultar_documento.php?tipo=${tipo}&numero=${numero}`)
+        .then(response => response.json())
+        .then(data => {
+            boton.innerHTML = textoOriginal;
+            boton.disabled = false;
+
+            if (data.success) {
+                // Construir nombre completo
+                let nombreCompleto = '';
+                if (data.data.nombre_completo) {
+                    nombreCompleto = data.data.nombre_completo;
+                } else if (data.data.nombres && data.data.apellido_paterno) {
+                    nombreCompleto = data.data.nombres + ' ' + data.data.apellido_paterno + ' ' + (data.data.apellido_materno || '');
+                } else if (data.data.razon_social) {
+                    nombreCompleto = data.data.razon_social;
+                }
+
+                // Rellenar nombre
+                const campoNombre = document.querySelector('input[name="nombre"]');
+                if (campoNombre && nombreCompleto) campoNombre.value = nombreCompleto;
+
+                // Rellenar apellido (si aplica y si la API lo devuelve)
+                const campoApellido = document.querySelector('input[name="apellido"]');
+                if (campoApellido && data.data.apellido_paterno) {
+                    campoApellido.value = data.data.apellido_paterno + ' ' + (data.data.apellido_materno || '');
+                }
+
+                // Rellenar dirección
+                const campoDireccion = document.querySelector('textarea[name="direccion"]');
+                if (campoDireccion && data.data.direccion) {
+                    campoDireccion.value = data.data.direccion;
+                }
+
+                alert('Datos cargados correctamente.');
+            } else {
+                alert('No se encontraron datos: ' + (data.message || 'Verifica el número.'));
+            }
+        })
+        .catch(error => {
+            boton.innerHTML = textoOriginal;
+            boton.disabled = false;
+            console.error('Error:', error);
+            alert('Error al consultar la API. Intenta de nuevo.');
+        });
+}
+</script>
     </body>
 </html>

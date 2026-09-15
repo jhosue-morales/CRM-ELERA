@@ -16,4 +16,6 @@ try {
 } catch (PDOException $e) {
     die("Error de conexión: " . $e->getMessage());
 }
+// Token de la API (se lee desde las variables de entorno de Railway)
+define('API_PERU_TOKEN', getenv('API_PERU_TOKEN') ?: '');
 ?>
