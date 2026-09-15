@@ -6,6 +6,8 @@ FROM php:8.2-apache
 # Instalar pdo y mysqli (necesario para conexiones remotas)
 RUN docker-php-ext-install pdo pdo_mysql mysqli
 
+# Dar permisos a la carpeta uploads para que Apache pueda escribir
+RUN mkdir -p /var/www/html/uploads && chown -R www-data:www-data /var/www/html/uploads && chmod -R 775 /var/www/html/uploads
 # Copiar tu código
 COPY . /var/www/html/
 
