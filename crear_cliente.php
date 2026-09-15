@@ -225,29 +225,51 @@ function consultarDocumento() {
             if (data.success) {
                 const d = data.data;
 
-                // Rellenar NOMBRE (solo nombres si es DNI)
+                // ==========================================
+                // RELLENAR NOMBRE (DNI: nombres / RUC: razón social)
+                // ==========================================
                 const campoNombre = document.querySelector('input[name="nombre"]');
                 if (campoNombre) {
-                    if (d.nombres) campoNombre.value = d.nombres;
-                    else if (d.razon_social) campoNombre.value = d.razon_social;
-                    else if (d.nombre_completo) campoNombre.value = d.nombre_completo;
+                    if (d.nombres) {
+                        // DNI: solo los nombres
+                        campoNombre.value = d.nombres;
+                    } else if (d.razon_social) {
+                        // RUC: razón social
+                        campoNombre.value = d.razon_social;
+                    } else if (d.nombre_o_razon_social) {
+                        // RUC: nombre o razón social (otras APIs)
+                        campoNombre.value = d.nombre_o_razon_social;
+                    } else if (d.nombre_completo) {
+                        // Fallback
+                        campoNombre.value = d.nombre_completo;
+                    }
                 }
 
-                // Rellenar APELLIDO (paterno + materno si es DNI)
+                // ==========================================
+                // RELLENAR APELLIDO
+                // ==========================================
                 const campoApellido = document.querySelector('input[name="apellido"]');
                 if (campoApellido) {
                     if (d.apellido_paterno) {
+                        // DNI: apellido paterno + materno
                         campoApellido.value = d.apellido_paterno + ' ' + (d.apellido_materno || '');
-                    } else if (d.razon_social) {
+                    } else if (d.razon_social || d.nombre_o_razon_social) {
+                        // RUC: no aplica apellido
                         campoApellido.value = 'N/A';
                     }
                 }
 
-                // Rellenar DIRECCIÓN
+                // ==========================================
+                // RELLENAR DIRECCIÓN
+                // ==========================================
                 const campoDireccion = document.querySelector('textarea[name="direccion"]');
-                if (campoDireccion && d.direccion) campoDireccion.value = d.direccion;
+                if (campoDireccion && d.direccion) {
+                    campoDireccion.value = d.direccion;
+                }
 
-                // Guardar el documento en el campo oculto
+                // ==========================================
+                // GUARDAR EL DOCUMENTO EN EL CAMPO OCULTO
+                // ==========================================
                 const campoDoc = document.getElementById('documento_hidden');
                 if (campoDoc) campoDoc.value = numero;
 
