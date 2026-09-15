@@ -3,7 +3,6 @@ session_start();
 if (!isset($_SESSION['usuario_id'])) { header('Location: index.php'); exit(); }
 require_once 'database.php';
 $usuarios = $pdo->query("SELECT nombre FROM usuarios ORDER BY nombre ASC")->fetchAll();
-
 $tipos = $pdo->query("SELECT * FROM tipos_clientes")->fetchAll();
 
 if (isset($_GET['tipo_agregado'])) {
@@ -13,21 +12,20 @@ if (isset($_GET['tipo_agregado'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $documento = $_POST['documento'] ?? '';
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
     $telefono = $_POST['telefono'];
-
     $tipo = $_POST['tipo'];
     $asignado = $_POST['asignado'];
     $direccion = $_POST['direccion'];
     $comentario = $_POST['comentario'] ?? '';
     
     try {
-        $stmt = $pdo->prepare("INSERT INTO clientes (nombre, apellido, telefono, tipo, asignado, direccion, comentario) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$nombre, $apellido, $telefono, $tipo, $asignado, $direccion, $comentario]);
+        $stmt = $pdo->prepare("INSERT INTO clientes (documento, nombre, apellido, telefono, tipo, asignado, direccion, comentario) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$documento, $nombre, $apellido, $telefono, $tipo, $asignado, $direccion, $comentario]);
         
         $clienteId = $pdo->lastInsertId();
-        
         $usuario = $_SESSION['usuario_nombre'] ?? 'Admin';
         $stmtHist = $pdo->prepare("INSERT INTO historial_clientes (cliente_id, usuario, accion) VALUES (?, ?, ?)");
         $stmtHist->execute([$clienteId, $usuario, 'Contacto creado']);
@@ -45,12 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="shortcut icon" href="/littlefavicon.ico" type="image/x-icon">
     <title>CRM | Nuevo cliente</title>
-</head>
-<body>
     <style>
         * { box-sizing: border-box; }
         body { margin: 0; background: #f6f8fb; font-family: "Segoe UI", Arial, sans-serif; color: #1e293b; }
@@ -63,7 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .form-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 3px 12px rgba(15, 23, 42, .04); overflow: hidden; }
         .form-content { padding: 30px; }
         .section { margin-bottom: 30px; }
-        .section:last-child { margin-bottom: 0; }
         .section-header { display: flex; align-items: center; gap: 11px; margin-bottom: 22px; }
         .section-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: #eff6ff; color: #2563eb; border-radius: 8px; font-size: 17px; }
         .section-title { margin: 0; font-size: 15px; font-weight: 650; color: #1e293b; }
@@ -76,24 +70,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .form-control:focus, .form-select:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, .08); }
         .input-group .form-select { border-radius: 8px 0 0 8px; }
         .input-group .btn { width: 46px; border-radius: 0 8px 8px 0; }
-        .comment-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; }
         .form-footer { display: flex; justify-content: flex-end; gap: 10px; padding: 20px 30px; border-top: 1px solid #e2e8f0; background: #fafbfc; }
         .btn-cancel { height: 40px; padding: 0 18px; border: 1px solid #dbe2ea; border-radius: 7px; background: white; color: #64748b; font-size: 13px; font-weight: 600; }
         .btn-cancel:hover { background: #f1f5f9; }
         .btn-save { height: 40px; padding: 0 20px; border: none; border-radius: 7px; background: #2563eb; color: white; font-size: 13px; font-weight: 600; transition: .2s; }
         .btn-save:hover { background: #1d4ed8; transform: translateY(-1px); }
         .alert { border-radius: 8px; font-size: 13px; }
-        .modal-content { border: none; border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,.15); }
-        .modal-header { border-bottom: 1px solid #e5e7eb; }
-        .modal-title { font-size: 16px; font-weight: 600; }
         @media (max-width: 768px) { .main { padding: 25px 18px; } .form-content { padding: 22px; } .form-footer { padding: 18px 22px; } }
     </style>
-
+</head>
+<body>
 <main class="main">
     <div class="page-container">
-        <div class="breadcrumb-custom">
-            Clientes / <span>Nuevo cliente</span>
-        </div>
+        <div class="breadcrumb-custom">Clientes / <span>Nuevo cliente</span></div>
         <h1 class="page-title">Registrar Nuevo cliente</h1>
         <p class="page-description">Registra la información del cliente para incorporarlo al sistema.</p>
 
@@ -114,28 +103,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                         </div>
                         <div class="row g-4">
-                            <div class="col-md-6 ">
+                            
+                            <!-- DNI / RUC -->
+                            <div class="col-md-6">
                                 <label class="form-label">DNI / RUC</label>
                                 <div class="input-group">
                                     <input type="text" id="doc_numero" class="form-control" placeholder="Ej. 12345678" maxlength="11">
-                                    <button type="button" class="btn btn-outline-primary" onclick="consultarDocumento()">
-                                        <i class="bi bi-search"></i> Consultar
+                                    <button type="button" class="btn btn-outline-primary" onclick="consultarDocumento()" title="Consultar">
+                                        <i class="bi bi-search"></i>
                                     </button>
                                 </div>
                                 <small class="text-muted">8 dígitos para DNI, 11 para RUC.</small>
                             </div>
+                            
+                            <!-- NOMBRE -->
                             <div class="col-md-6">
                                 <label class="form-label">Nombre</label>
                                 <input type="text" name="nombre" class="form-control" placeholder="Ej. Jhosue" required>
                             </div>
+                            
+                            <!-- APELLIDO -->
                             <div class="col-md-6">
                                 <label class="form-label">Apellido <span class="required">*</span></label>
                                 <input type="text" name="apellido" class="form-control" placeholder="Ej. Mayorga" required>
                             </div>
+                            
+                            <!-- MÓVIL -->
                             <div class="col-md-6">
                                 <label class="form-label">Móvil</label>
                                 <input type="text" name="telefono" class="form-control" placeholder="Ej. 970 408 931">
+                                <input type="hidden" name="documento" id="documento_hidden" value="">
                             </div>
+                            
+                            <!-- TIPO -->
                             <div class="col-md-6">
                                 <label class="form-label">Tipo <span class="required">*</span></label>
                                 <div class="input-group">
@@ -147,7 +147,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalTipo"><i class="bi bi-plus-lg"></i></button>
                                 </div>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            
+                            <!-- ASIGNADO -->
+                            <div class="col-md-6">
                                 <label class="form-label">Asignado a</label>
                                 <select name="asignado" class="form-select">
                                     <option value="">-- Selecciona un usuario --</option>
@@ -156,11 +158,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <?php endforeach; ?>
                                 </select>
                             </div>
-                            <div class="col-md-8">
+                            
+                            <!-- DIRECCIÓN -->
+                            <div class="col-md-12">
                                 <label class="form-label">Dirección de facturación</label>
                                 <textarea name="direccion" class="form-control" placeholder="Ingresa la dirección del cliente..."></textarea>
                             </div>
-                            
                         </div>
                     </div>
 
@@ -174,6 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </main>
 
+<!-- MODAL TIPO -->
 <div class="modal fade" id="modalTipo" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -207,9 +211,9 @@ function consultarDocumento() {
 
     const tipo = (numero.length === 8) ? 'dni' : 'ruc';
     
-    const boton = event.target;
+    const boton = event.target.closest('button');
     const textoOriginal = boton.innerHTML;
-    boton.innerHTML = '<i class="bi bi-hourglass-split"></i> Consultando...';
+    boton.innerHTML = '<i class="bi bi-hourglass-split"></i>';
     boton.disabled = true;
 
     fetch(`consultar_documento.php?tipo=${tipo}&numero=${numero}`)
@@ -219,31 +223,33 @@ function consultarDocumento() {
             boton.disabled = false;
 
             if (data.success) {
-                // Construir nombre completo
-                let nombreCompleto = '';
-                if (data.data.nombre_completo) {
-                    nombreCompleto = data.data.nombre_completo;
-                } else if (data.data.nombres && data.data.apellido_paterno) {
-                    nombreCompleto = data.data.nombres + ' ' + data.data.apellido_paterno + ' ' + (data.data.apellido_materno || '');
-                } else if (data.data.razon_social) {
-                    nombreCompleto = data.data.razon_social;
-                }
+                const d = data.data;
 
-                // Rellenar nombre
+                // Rellenar NOMBRE (solo nombres si es DNI)
                 const campoNombre = document.querySelector('input[name="nombre"]');
-                if (campoNombre && nombreCompleto) campoNombre.value = nombreCompleto;
+                if (campoNombre) {
+                    if (d.nombres) campoNombre.value = d.nombres;
+                    else if (d.razon_social) campoNombre.value = d.razon_social;
+                    else if (d.nombre_completo) campoNombre.value = d.nombre_completo;
+                }
 
-                // Rellenar apellido (si aplica y si la API lo devuelve)
+                // Rellenar APELLIDO (paterno + materno si es DNI)
                 const campoApellido = document.querySelector('input[name="apellido"]');
-                if (campoApellido && data.data.apellido_paterno) {
-                    campoApellido.value = data.data.apellido_paterno + ' ' + (data.data.apellido_materno || '');
+                if (campoApellido) {
+                    if (d.apellido_paterno) {
+                        campoApellido.value = d.apellido_paterno + ' ' + (d.apellido_materno || '');
+                    } else if (d.razon_social) {
+                        campoApellido.value = 'N/A';
+                    }
                 }
 
-                // Rellenar dirección
+                // Rellenar DIRECCIÓN
                 const campoDireccion = document.querySelector('textarea[name="direccion"]');
-                if (campoDireccion && data.data.direccion) {
-                    campoDireccion.value = data.data.direccion;
-                }
+                if (campoDireccion && d.direccion) campoDireccion.value = d.direccion;
+
+                // Guardar el documento en el campo oculto
+                const campoDoc = document.getElementById('documento_hidden');
+                if (campoDoc) campoDoc.value = numero;
 
                 alert('Datos cargados correctamente.');
             } else {
